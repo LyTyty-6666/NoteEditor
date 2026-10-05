@@ -33,8 +33,8 @@
   --text-muted: #64748b;
   --text-inverse: #020617;
 
-  /* Typography */
-  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Typography with Khmer Font Support */
+  --font-main: 'Kantumruy Pro', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Shadows & Glass */
@@ -68,7 +68,7 @@ body {
   font-family: var(--font-main);
   background-color: var(--bg-dark);
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.7;
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
@@ -145,8 +145,8 @@ body {
 .section-title {
   font-size: 2.35rem;
   font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.25;
+  letter-spacing: normal;
+  line-height: 1.4;
   margin-bottom: 16px;
   color: #fff;
 }
@@ -366,10 +366,10 @@ body {
 }
 
 .hero-title {
-  font-size: 3.35rem;
+  font-size: 3.1rem;
   font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.04em;
+  line-height: 1.35;
+  letter-spacing: normal;
   color: #ffffff;
 }
 .hero-subtitle {

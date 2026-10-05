@@ -1,86 +1,86 @@
 /**
- * NoteEditor - Frontend Logic & Interactive Engine
- * Handles Reviews & Ratings, Commenting, Star Picker, Markdown Sandbox, and Download Handlers
+ * NoteEditor - Frontend Logic & Interactive Engine (ភាសាខ្មែរ / Khmer Localization)
+ * គ្រប់គ្រងការវាយតម្លៃ ពិន្ទុ មតិយោបល់ ផ្ទាំងសាកល្បង Markdown និងការទាញយក
  */
 
 // =============================================================================
-// 1. Initial Community Seed Reviews
+// 1. Initial Community Seed Reviews (មតិយោបល់គំរូជាភាសាខ្មែរ)
 // =============================================================================
 const DEFAULT_REVIEWS = [
   {
     id: "rev-1",
-    author: "Elena Rostova",
+    author: "សុខ ចាន់ដារ៉ា",
     role: "Senior Frontend Engineer",
     avatarBg: "linear-gradient(135deg, #10b981, #06b6d4)",
     rating: 5,
-    title: "Finally, a Windows editor that isn't a 500MB Electron monster!",
-    comment: "I've been searching for a native, lightweight markdown note app for months. NoteEditor starts up in literal milliseconds and the split-screen markdown preview with code block syntax highlighting is buttery smooth. The dark mode matches Windows 11 aesthetics beautifully.",
-    tags: ["Blazing Fast", "Clean Dark UI", "Great Markdown"],
+    title: "ទីបំផុត បានជួបកម្មវិធីកត់ត្រាលើ Windows ដ៏លឿន និងមិនស៊ី RAM ច្រើន!",
+    comment: "ខ្ញុំបានស្វែងរកកម្មវិធីកត់ត្រា Markdown ស្រាលៗជាយូរមកហើយ។ NoteEditor បើកដំណើរការលឿនដូចផ្លេកបន្ទោរ ហើយផ្ទាំង Preview ជាមួយ Syntax Highlighting គឺរលូនខ្លាំងណាស់។ Dark Mode មើលទៅស្រស់ស្អាត ស័ក្តិសមឥតខ្ចោះជាមួយ Windows 11។",
+    tags: ["លឿនរហ័ស", "ផ្ទាំងងងឹតស្អាត", "Markdown ល្អឥតខ្ចោះ"],
     date: "2026-10-02",
     helpfulCount: 42,
     verified: true
   },
   {
     id: "rev-2",
-    author: "Marcus Vance",
-    role: "Technical Writer & Author",
+    author: "គង់ ពិសិដ្ឋ",
+    role: "Technical Writer & Creator",
     avatarBg: "linear-gradient(135deg, #8b5cf6, #ec4899)",
     rating: 5,
-    title: "Completely replaced my bloated writing software",
-    comment: "The distraction-free workflow is a breath of fresh air. I draft full documentation chapters here without any sluggishness. Auto-save has already saved my draft twice during unexpected reboots. And the best part? Absolutely free with no subscriptions.",
-    tags: ["100% Free", "Great Markdown", "Lightweight (40MB)"],
+    title: "ជំនួសកម្មវិធីសរសេរចាស់ៗដ៏ធ្ងន់ៗទាំងអស់បានយ៉ាងល្អ",
+    comment: "បរិយាកាសការងារដែលគ្មានការរំខានពិតជាអស្ចារ្យណាស់។ ខ្ញុំសរសេរឯកសាររាប់សិបទំព័រនៅទីនេះដោយមិនមានការគាំងទាល់តែសោះ។ ប្រព័ន្ធ Auto-save ជួយសង្គ្រោះឯកសារខ្ញុំបានច្រើនដង។ ហើយអ្វីដែលពិសេសគឺឥតគិតថ្លៃ ១០០% គ្មានការទារលុយប្រចាំខែឡើយ។",
+    tags: ["ឥតគិតថ្លៃ ១០០%", "Markdown ល្អឥតខ្ចោះ", "ទំហំស្រាល (40MB)"],
     date: "2026-09-28",
     helpfulCount: 31,
     verified: true
   },
   {
     id: "rev-3",
-    author: "David Chen",
-    role: "Computer Science Student",
+    author: "ជា ស្រីមុំ",
+    role: "និស្សិតវិទ្យាសាស្ត្រកុំព្យូទ័រ",
     avatarBg: "linear-gradient(135deg, #f59e0b, #ef4444)",
     rating: 5,
-    title: "Perfect for university lecture notes and quick code snippets",
-    comment: "I love having my notes stored as standard .md files on my hard drive instead of trapped inside some cloud service. The math equations and syntax highlighting make STEM coursework so much easier to organize.",
-    tags: ["Blazing Fast", "Clean Dark UI", "100% Free"],
+    title: "ល្អបំផុតសម្រាប់ការកត់ត្រាមេរៀនសាកលវិទ្យាល័យ និងកូដរហ័ស",
+    comment: "ខ្ញុំចូលចិត្តការរក្សាទុកឯកសារជាទម្រង់ .md នៅលើកុំព្យូទ័រផ្ទាល់ដោយមិនចាំបាច់មានអ៊ីនធឺណិត។ រូបមន្តគណិតវិទ្យា និងការបង្ហាញពណ៌កូដជួយដល់ការរៀនមុខវិជ្ជាបច្ចេកវិទ្យាច្រើនណាស់។",
+    tags: ["លឿនរហ័ស", "ផ្ទាំងងងឹតស្អាត", "ឥតគិតថ្លៃ ១០០%"],
     date: "2026-09-25",
     helpfulCount: 19,
     verified: true
   },
   {
     id: "rev-4",
-    author: "Sarah Lindqvist",
+    author: "វ៉ាន់ សុភ័ក្ត្រ",
     role: "Product Designer",
     avatarBg: "linear-gradient(135deg, #06b6d4, #3b82f6)",
     rating: 5,
-    title: "Minimalist, sleek, and zero distraction",
-    comment: "The typography and spacing are top tier. Keyboard shortcuts are intuitive, and having quick checklists right inside my notes keeps daily sprints organized without opening heavy task apps.",
-    tags: ["Clean Dark UI", "Great Markdown"],
+    title: "ការរចនាម៉ូតស្រស់ស្អាត ទំនើប និងមិនរំខានភ្នែក",
+    comment: "ពុម្ពអក្សរ និងចន្លោះឃ្លាមានតុល្យភាពល្អ។ ផ្លូវកាត់ក្តារចុច (Shortcuts) ងាយស្រួលប្រើ ហើយមាន Checklists ស្រាប់ក្នុងចំណាំ ធ្វើឱ្យការរៀបចំកិច្ចការប្រចាំថ្ងៃកាន់តែងាយស្រួល។",
+    tags: ["ផ្ទាំងងងឹតស្អាត", "Markdown ល្អឥតខ្ចោះ"],
     date: "2026-09-19",
     helpfulCount: 15,
     verified: true
   },
   {
     id: "rev-5",
-    author: "Liam O'Connor",
+    author: "ហេង វិសាល",
     role: "DevOps Engineer",
     avatarBg: "linear-gradient(135deg, #10b981, #3b82f6)",
     rating: 4,
-    title: "Great tool for scratchpad notes and yaml config edits",
-    comment: "Super snappy and takes almost zero RAM in Task Manager (under 60MB on my machine). Only small feature I'd love is a split view for 3 files at once, but v2.0 is already miles ahead of everything else.",
-    tags: ["Lightweight (40MB)", "Blazing Fast"],
+    title: "ឧបករណ៍ដ៏អស្ចារ្យសម្រាប់កត់ត្រារហ័ស និងកែសម្រួល Config YAML",
+    comment: "លឿនមែនទែន ហើយស៊ី RAM តិចបំផុតក្នុង Task Manager (ក្រោម 60MB)។ ជួយការងាររៀបចំម៉ាស៊ីន server បានយ៉ាងរហ័ស និងងាយស្រួល។",
+    tags: ["ទំហំស្រាល (40MB)", "លឿនរហ័ស"],
     date: "2026-09-14",
     helpfulCount: 8,
     verified: true
   },
   {
     id: "rev-6",
-    author: "Kavita Patel",
-    role: "Fullstack Developer",
+    author: "ម៉េង ស្រីលក្ខណ៍",
+    role: "Fullstack Web Developer",
     avatarBg: "linear-gradient(135deg, #ec4899, #f59e0b)",
     rating: 5,
-    title: "The offline-first philosophy is exactly what was missing",
-    comment: "No login prompt, no AI subscription nag screen, no network requests tracking keystrokes. Just double-click the exe, install in 5 seconds, and write. Thank you to the creators for keeping this free!",
-    tags: ["100% Free", "Blazing Fast", "Clean Dark UI"],
+    title: "ការរក្សាទិន្នន័យក្នុងម៉ាស៊ីន (Offline-first) គឺជាអ្វីដែលខ្ញុំចង់បានបំផុត",
+    comment: "មិនបាច់ Login មិនបាច់បង់ប្រាក់ថ្លៃ AI មិនបាច់ភ័យខ្លាចគេលួចតាមដានទិន្នន័យ។ គ្រាន់តែទាញយក Install ៥ វិនាទី ហើយប្រើបានភ្លាមៗ។ អរគុណក្រុមការងារដែលបង្កើតកម្មវិធីនេះឡើង!",
+    tags: ["ឥតគិតថ្លៃ ១០០%", "លឿនរហ័ស", "ផ្ទាំងងងឹតស្អាត"],
     date: "2026-09-08",
     helpfulCount: 27,
     verified: true
@@ -90,8 +90,8 @@ const DEFAULT_REVIEWS = [
 // =============================================================================
 // 2. State & Storage Management
 // =============================================================================
-const STORAGE_KEY_REVIEWS = "noteeditor_user_reviews_v2";
-const STORAGE_KEY_UPVOTES = "noteeditor_upvoted_ids_v2";
+const STORAGE_KEY_REVIEWS = "noteeditor_user_reviews_km_v2";
+const STORAGE_KEY_UPVOTES = "noteeditor_upvoted_ids_km_v2";
 
 function loadReviews() {
   try {
@@ -118,66 +118,68 @@ function saveReviews(reviews) {
 
 function getUpvotedIds() {
   try {
-    const ids = localStorage.getItem(STORAGE_KEY_UPVOTES);
-    return ids ? JSON.parse(ids) : [];
+    const saved = localStorage.getItem(STORAGE_KEY_UPVOTES);
+    return saved ? JSON.parse(saved) : [];
   } catch (e) {
     return [];
   }
 }
 
 function markReviewUpvoted(id) {
-  const ids = getUpvotedIds();
-  if (!ids.includes(id)) {
-    ids.push(id);
-    localStorage.setItem(STORAGE_KEY_UPVOTES, JSON.stringify(ids));
+  try {
+    const upvoted = getUpvotedIds();
+    if (!upvoted.includes(id)) {
+      upvoted.push(id);
+      localStorage.setItem(STORAGE_KEY_UPVOTES, JSON.stringify(upvoted));
+    }
+  } catch (e) {
+    console.error(e);
   }
 }
 
-// Current runtime state
 let currentReviews = loadReviews();
 let currentFilter = "all";
 let currentSort = "newest";
 let visibleLimit = 5;
 
 // =============================================================================
-// 3. Rating & Review Statistics Calculations
+// 3. Dynamic Rating Statistics & Breakdown
 // =============================================================================
 function updateRatingStats() {
   const total = currentReviews.length;
-  if (total === 0) return;
-
-  const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+  const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
   let sum = 0;
 
   currentReviews.forEach(r => {
-    const star = Math.max(1, Math.min(5, Math.round(r.rating)));
+    const star = Math.min(5, Math.max(1, Math.round(r.rating || 5)));
     counts[star] = (counts[star] || 0) + 1;
-    sum += r.rating;
+    sum += star;
   });
 
-  const avg = (sum / total).toFixed(1);
+  const avg = total > 0 ? (sum / total).toFixed(1) : "5.0";
 
-  // Update big score
-  const avgDisplay = document.getElementById("avg-rating-display");
-  const avgStars = document.getElementById("avg-stars-display");
-  const totalCount = document.getElementById("total-reviews-count");
+  // Display elements
+  const avgBigEl = document.getElementById("avg-rating-display");
+  const avgStarsEl = document.getElementById("avg-stars-display");
+  const totalCountEl = document.getElementById("total-reviews-count");
 
-  if (avgDisplay) avgDisplay.textContent = avg;
-  if (avgStars) {
-    const fullStars = Math.round(avg);
-    avgStars.textContent = "★".repeat(fullStars) + "☆".repeat(5 - fullStars);
+  if (avgBigEl) avgBigEl.textContent = avg;
+  if (avgStarsEl) {
+    const roundedAvg = Math.round(parseFloat(avg));
+    avgStarsEl.textContent = "★".repeat(roundedAvg) + "☆".repeat(5 - roundedAvg);
   }
-  if (totalCount) {
-    totalCount.textContent = `Based on ${total} community ratings & reviews`;
+  if (totalCountEl) {
+    totalCountEl.textContent = `ផ្អែកលើការវាយតម្លៃពិតប្រាកដចំនួន ${total}`;
   }
 
   // Update breakdown bars
-  for (let s = 1; s <= 5; s++) {
-    const bar = document.getElementById(`bar-${s}`);
-    const countEl = document.getElementById(`count-${s}`);
-    const pct = total > 0 ? ((counts[s] / total) * 100).toFixed(1) : 0;
-    if (bar) bar.style.width = `${pct}%`;
-    if (countEl) countEl.textContent = counts[s];
+  for (let i = 1; i <= 5; i++) {
+    const bar = document.getElementById(`bar-${i}`);
+    const countLabel = document.getElementById(`count-${i}`);
+    const percent = total > 0 ? ((counts[i] / total) * 100).toFixed(1) : 0;
+
+    if (bar) bar.style.width = `${percent}%`;
+    if (countLabel) countLabel.textContent = counts[i];
   }
 
   // Update filter pill counts
@@ -189,7 +191,7 @@ function updateRatingStats() {
   if (filterCountAll) filterCountAll.textContent = total;
   if (filterCount5) filterCount5.textContent = counts[5];
   if (filterCount4) filterCount4.textContent = counts[4];
-  if (filterCount3) filterCount3.textContent = counts[3] + counts[2] + counts[1];
+  if (filterCount3) filterCount3.textContent = counts[1] + counts[2] + counts[3];
 }
 
 // =============================================================================
@@ -227,8 +229,8 @@ function renderReviews(highlightId = null) {
   if (toDisplay.length === 0) {
     container.innerHTML = `
       <div style="text-align: center; padding: 40px; background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed var(--border-card);">
-        <p style="color: var(--text-secondary); margin-bottom: 12px;">No reviews found matching this filter.</p>
-        <button type="button" class="btn btn-secondary btn-sm" onclick="setFilter('all')">Show All Reviews</button>
+        <p style="color: var(--text-secondary); margin-bottom: 12px;">មិនមានមតិយោបល់ត្រូវនឹងតម្រងនេះទេ។</p>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="setFilter('all')">បង្ហាញមតិយោបល់ទាំងអស់</button>
       </div>
     `;
     if (loadMoreBtn) loadMoreBtn.style.display = "none";
@@ -239,7 +241,7 @@ function renderReviews(highlightId = null) {
     const isNew = r.id === highlightId ? "is-newly-added" : "";
     const isUpvoted = upvotedIds.includes(r.id);
     const starString = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
-    const initials = r.author ? r.author.split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase() : "U";
+    const initials = r.author ? r.author.trim().substring(0, 2) : "អ្នក";
 
     const tagsHtml = (r.tags && r.tags.length > 0)
       ? `<div class="review-card-tags">
@@ -257,11 +259,11 @@ function renderReviews(highlightId = null) {
             <div class="reviewer-meta">
               <div class="reviewer-name-row">
                 <span class="reviewer-name">${escapeHtml(r.author)}</span>
-                <span class="badge-verified-user" title="Verified installer of NoteEditor">
-                  ✓ Verified User
+                <span class="badge-verified-user" title="បានផ្ទៀងផ្ទាត់ការដំឡើង NoteEditor">
+                  ✓ អ្នកប្រើប្រាស់ពិតប្រាកដ
                 </span>
               </div>
-              <span class="reviewer-role-text">${escapeHtml(r.role || "Windows User")}</span>
+              <span class="reviewer-role-text">${escapeHtml(r.role || "អ្នកប្រើប្រាស់ Windows")}</span>
             </div>
           </div>
           <div class="review-date">${formatDate(r.date)}</div>
@@ -279,11 +281,11 @@ function renderReviews(highlightId = null) {
 
         <div class="review-card-footer">
           <button type="button" class="helpful-vote-btn ${isUpvoted ? 'has-voted' : ''}" 
-                  onclick="handleUpvote('${r.id}')" aria-label="Mark review as helpful">
-            <span>👍 Helpful</span>
+                  onclick="handleUpvote('${r.id}')" aria-label="គាំទ្រថាមានប្រយោជន៍">
+            <span>👍 មានប្រយោជន៍</span>
             <span class="helpful-count">(${r.helpfulCount || 0})</span>
           </button>
-          <span class="download-ref">NoteEditor v2.0 for Windows</span>
+          <span class="download-ref">NoteEditor v2.0 សម្រាប់ Windows</span>
         </div>
       </article>
     `;
@@ -292,7 +294,7 @@ function renderReviews(highlightId = null) {
   if (loadMoreBtn) {
     if (filtered.length > visibleLimit) {
       loadMoreBtn.style.display = "inline-block";
-      loadMoreBtn.textContent = `Load More Reviews (${filtered.length - visibleLimit} more)`;
+      loadMoreBtn.textContent = `បង្ហាញមតិយោបល់បន្ថែម (${filtered.length - visibleLimit} ទៀត)`;
     } else {
       loadMoreBtn.style.display = "none";
     }
@@ -313,7 +315,7 @@ window.setFilter = function(filterVal) {
 window.handleUpvote = function(reviewId) {
   const upvoted = getUpvotedIds();
   if (upvoted.includes(reviewId)) {
-    showToast("You've already marked this review as helpful!");
+    showToast("អ្នកបានបោះឆ្នោតគាំទ្រការវាយតម្លៃនេះរួចហើយ!");
     return;
   }
 
@@ -323,7 +325,7 @@ window.handleUpvote = function(reviewId) {
     markReviewUpvoted(reviewId);
     saveReviews(currentReviews);
     renderReviews();
-    showToast("Thanks! Marked as helpful 👍");
+    showToast("សូមអរគុណសម្រាប់ការបោះឆ្នោតគាំទ្រ! 👍");
   }
 };
 
@@ -331,11 +333,11 @@ window.handleUpvote = function(reviewId) {
 // 5. Interactive Star Rating Selector in Review Form
 // =============================================================================
 const STAR_FEEDBACK_LABELS = {
-  1: "1 / 5 - Poor experience, needs work",
-  2: "2 / 5 - Fair, but has limitations",
-  3: "3 / 5 - Good, meets basic needs",
-  4: "4 / 5 - Very good! Enjoyable and snappy",
-  5: "5 / 5 - Outstanding & Highly Recommended!"
+  1: "១ / ៥ - ត្រូវការការកែលម្អច្រើន",
+  2: "២ / ៥ - ធម្មតា មានកម្រិតមួយចំនួន",
+  3: "៣ / ៥ - ល្អ បំពេញតម្រូវការមូលដ្ឋាន",
+  4: "៤ / ៥ - ល្អណាស់! ដំណើរការលឿន និងរលូន",
+  5: "៥ / ៥ - ល្អឥតខ្ចោះ & ណែនាំយ៉ាងខ្លាំង!"
 };
 
 function initStarPicker() {
@@ -351,105 +353,116 @@ function initStarPicker() {
       const val = parseInt(btn.getAttribute("data-val"), 10);
       btn.classList.toggle("active", val <= rating);
     });
-    feedbackEl.textContent = STAR_FEEDBACK_LABELS[rating] || `${rating} / 5 Stars`;
+    feedbackEl.textContent = STAR_FEEDBACK_LABELS[rating] || `${rating} / 5`;
   }
 
   starBtns.forEach(btn => {
-    const val = parseInt(btn.getAttribute("data-val"), 10);
-
-    // Hover effect
+    // Hover highlight
     btn.addEventListener("mouseenter", () => {
-      updateVisuals(val);
+      const hoverVal = parseInt(btn.getAttribute("data-val"), 10);
+      starBtns.forEach(b => {
+        const v = parseInt(b.getAttribute("data-val"), 10);
+        b.classList.toggle("hovered", v <= hoverVal);
+      });
     });
 
-    // Click effect
+    // Click select
     btn.addEventListener("click", () => {
+      const val = parseInt(btn.getAttribute("data-val"), 10);
       hiddenInput.value = val;
       updateVisuals(val);
     });
   });
 
-  // Mouse leave restores saved value
   picker.addEventListener("mouseleave", () => {
-    const current = parseInt(hiddenInput.value, 10) || 5;
-    updateVisuals(current);
+    starBtns.forEach(b => b.classList.remove("hovered"));
+    const currentVal = parseInt(hiddenInput.value || "5", 10);
+    updateVisuals(currentVal);
   });
 
-  // Initial state
-  updateVisuals(5);
+  // Initial set
+  updateVisuals(parseInt(hiddenInput.value || "5", 10));
 }
 
 // =============================================================================
-// 6. Review Form Submission Handler
+// 6. Review Form Submission & Real-Time Publishing
 // =============================================================================
 function initReviewForm() {
   const form = document.getElementById("new-review-form");
+  const authorInput = document.getElementById("review-author");
+  const roleInput = document.getElementById("review-role");
+  const titleInput = document.getElementById("review-title");
   const commentTextarea = document.getElementById("review-comment");
   const charsLeftSpan = document.getElementById("comment-chars-left");
 
-  if (!form) return;
+  if (!form || !commentTextarea) return;
 
   // Character counter
-  if (commentTextarea && charsLeftSpan) {
-    commentTextarea.addEventListener("input", () => {
-      const left = 1500 - commentTextarea.value.length;
+  commentTextarea.addEventListener("input", () => {
+    const left = 1500 - commentTextarea.value.length;
+    if (charsLeftSpan) {
       charsLeftSpan.textContent = left;
-      charsLeftSpan.style.color = left < 50 ? "#f43f5e" : "var(--text-muted)";
-    });
-  }
+      charsLeftSpan.style.color = left < 50 ? "var(--accent-rose)" : "var(--text-muted)";
+    }
+  });
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const nameInput = document.getElementById("review-author");
-    const roleInput = document.getElementById("review-role");
-    const titleInput = document.getElementById("review-title");
-    const ratingInput = document.getElementById("form-rating-val");
+    let isValid = true;
 
-    // Reset error states
-    form.querySelectorAll(".form-group").forEach(g => g.classList.remove("has-error"));
+    // Reset error messages
+    document.querySelectorAll(".form-error-msg").forEach(el => el.classList.remove("visible"));
+    document.querySelectorAll(".form-input, .form-textarea").forEach(el => el.classList.remove("input-error"));
 
-    let hasError = false;
-
-    if (!nameInput.value.trim()) {
-      nameInput.closest(".form-group").classList.add("has-error");
-      hasError = true;
+    // Validate Author
+    if (!authorInput.value.trim()) {
+      document.getElementById("name-error-msg")?.classList.add("visible");
+      authorInput.classList.add("input-error");
+      isValid = false;
     }
 
+    // Validate Title
     if (!titleInput.value.trim()) {
-      titleInput.closest(".form-group").classList.add("has-error");
-      hasError = true;
+      document.getElementById("title-error-msg")?.classList.add("visible");
+      titleInput.classList.add("input-error");
+      isValid = false;
     }
 
-    if (!commentTextarea.value.trim() || commentTextarea.value.trim().length < 10) {
-      commentTextarea.closest(".form-group").classList.add("has-error");
-      hasError = true;
+    // Validate Comment
+    if (commentTextarea.value.trim().length < 10) {
+      document.getElementById("comment-error-msg")?.classList.add("visible");
+      commentTextarea.classList.add("input-error");
+      isValid = false;
     }
 
-    if (hasError) return;
+    if (!isValid) return;
 
-    // Collect tags
-    const checkedTags = Array.from(form.querySelectorAll('input[name="tag"]:checked')).map(cb => cb.value);
+    // Selected Tags
+    const checkedTags = Array.from(form.querySelectorAll("input[name='tag']:checked")).map(cb => cb.value);
 
-    // Dynamic gradient for avatar
-    const gradients = [
+    // Selected Rating
+    const ratingVal = parseInt(document.getElementById("form-rating-val").value || "5", 10);
+
+    // Generate colorful avatar background
+    const avatarGradients = [
       "linear-gradient(135deg, #10b981, #06b6d4)",
-      "linear-gradient(135deg, #6366f1, #a855f7)",
-      "linear-gradient(135deg, #f59e0b, #ec4899)",
+      "linear-gradient(135deg, #8b5cf6, #ec4899)",
+      "linear-gradient(135deg, #f59e0b, #ef4444)",
       "linear-gradient(135deg, #06b6d4, #3b82f6)",
-      "linear-gradient(135deg, #10b981, #84cc16)"
+      "linear-gradient(135deg, #ec4899, #f59e0b)"
     ];
-    const randomBg = gradients[Math.floor(Math.random() * gradients.length)];
+    const randomGradient = avatarGradients[Math.floor(Math.random() * avatarGradients.length)];
 
     const newReview = {
       id: "rev-" + Date.now(),
-      author: nameInput.value.trim(),
-      role: roleInput.value.trim() || "Verified User",
-      avatarBg: randomBg,
-      rating: parseInt(ratingInput.value, 10) || 5,
+      author: authorInput.value.trim(),
+      role: roleInput.value.trim() || "អ្នកប្រើប្រាស់ Windows",
+      avatarBg: randomGradient,
+      rating: ratingVal,
       title: titleInput.value.trim(),
       comment: commentTextarea.value.trim(),
-      tags: checkedTags.length > 0 ? checkedTags : ["Verified Download"],
+      tags: checkedTags.length > 0 ? checkedTags : ["អ្នកប្រើប្រាស់ពិតប្រាកដ"],
       date: new Date().toISOString().split("T")[0],
       helpfulCount: 0,
       verified: true
@@ -473,7 +486,7 @@ function initReviewForm() {
     initStarPicker();
     if (charsLeftSpan) charsLeftSpan.textContent = "1500";
 
-    showToast("🎉 Thank you! Your review & comment are now published.");
+    showToast("🎉 សូមអរគុណ! ការវាយតម្លៃ និងមតិយោបល់របស់អ្នកត្រូវបានផ្សព្វផ្សាយ។");
 
     // Scroll smoothly to newly inserted review
     const newEl = document.getElementById(newReview.id);
@@ -484,29 +497,29 @@ function initReviewForm() {
 }
 
 // =============================================================================
-// 7. Interactive Live Markdown Sandbox
+// 7. Interactive Live Markdown Sandbox (ជាភាសាខ្មែរ)
 // =============================================================================
-const SAMPLE_MARKDOWN = `# Welcome to NoteEditor v2.0 🚀
+const SAMPLE_MARKDOWN = `# សូមស្វាគមន៍មកកាន់ NoteEditor v2.0 🚀
 
-NoteEditor is built for **speed**, **focus**, and **simplicity**.
+NoteEditor ត្រូវបានបង្កើតឡើងដើម្បី **ល្បឿនលឿន**, **ភាពងាយស្រួល**, និង **ភាពសាមញ្ញ**។
 
-## Key Capabilities
-- [x] Lightning-fast cold startup (< 15ms)
-- [x] Local-first file storage on your Windows PC
-- [x] Zero subscriptions or telemetry
-- [ ] Test real-time markdown in this interactive preview!
+## លក្ខណៈពិសេសចម្បងៗ
+- [x] បើកដំណើរការលឿនដូចផ្លេកបន្ទោរ (< 15ms)
+- [x] រក្សាទុកឯកសារនៅលើកុំព្យូទ័រ Windows របស់អ្នកផ្ទាល់
+- [x] គ្មានការបង់ប្រាក់ប្រចាំខែ និងគ្មានការលួចតាមដានទិន្នន័យ
+- [ ] សាកល្បងសរសេរ Markdown ផ្ទាល់ក្នុងប្រអប់នេះ!
 
-### Sample Code Block
+### ឧទាហរណ៍កូដ (Code Block)
 \`\`\`javascript
-function createNote(title, content) {
-  console.log("Saving note locally:", title);
-  return { id: Date.now(), title, content, updated: new Date() };
+function saveKhmerNote(title, content) {
+  console.log("កំពុងរក្សាទុកឯកសារ:", title);
+  return { id: Date.now(), title, content, date: new Date() };
 }
 \`\`\`
 
-> "Simplicity is prerequisite for reliability." — Edsger W. Dijkstra
+> "ភាពសាមញ្ញគឺជាមូលដ្ឋានគ្រឹះនៃភាពជឿជាក់។" — Edsger W. Dijkstra
 
-Feel free to edit this text or use the formatting buttons above!`;
+អ្នកអាចកែសម្រួលអត្ថបទនេះ ឬចុចលើប៊ូតុងខាងលើដើម្បីសាកល្បង!`;
 
 function parseSimpleMarkdown(md) {
   if (!md) return "";
@@ -577,8 +590,8 @@ function initDemoSandbox() {
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     const chars = text.length;
 
-    if (wordCount) wordCount.textContent = `${words} word${words === 1 ? '' : 's'}`;
-    if (charCount) charCount.textContent = `${chars} character${chars === 1 ? '' : 's'}`;
+    if (wordCount) wordCount.textContent = `${words} ពាក្យ`;
+    if (charCount) charCount.textContent = `${chars} តួអក្សរ`;
   }
 
   // Populate sample
@@ -591,7 +604,7 @@ function initDemoSandbox() {
     resetBtn.addEventListener("click", () => {
       textarea.value = SAMPLE_MARKDOWN;
       update();
-      showToast("Demo reset to default sample!");
+      showToast("បានកំណត់គំរូសាកល្បងឡើងវិញ!");
     });
   }
 
@@ -616,31 +629,31 @@ function insertFormatting(textarea, action) {
 
   switch (action) {
     case "bold":
-      replacement = `**${selected || "bold text"}**`;
+      replacement = `**${selected || "អក្សរដិត"}**`;
       cursorOffset = selected ? replacement.length : 2;
       break;
     case "italic":
-      replacement = `*${selected || "italic text"}*`;
+      replacement = `*${selected || "អក្សរទ្រេត"}*`;
       cursorOffset = selected ? replacement.length : 1;
       break;
     case "heading":
-      replacement = `\n## ${selected || "New Heading"}\n`;
+      replacement = `\n## ${selected || "ចំណងជើងថ្មី"}\n`;
       cursorOffset = replacement.length;
       break;
     case "code":
       if (selected.includes("\n")) {
-        replacement = `\n\`\`\`javascript\n${selected || "// your code here"}\n\`\`\`\n`;
+        replacement = `\n\`\`\`javascript\n${selected || "// កូដរបស់អ្នកនៅទីនេះ"}\n\`\`\`\n`;
       } else {
         replacement = `\`${selected || "code"}\``;
       }
       cursorOffset = replacement.length;
       break;
     case "task":
-      replacement = `\n- [ ] ${selected || "To-do item"}\n`;
+      replacement = `\n- [ ] ${selected || "កិច្ចការត្រូវធ្វើ"}\n`;
       cursorOffset = replacement.length;
       break;
     case "quote":
-      replacement = `\n> ${selected || "Thoughtful quote"}\n`;
+      replacement = `\n> ${selected || "សម្រង់សម្តីដ៏មានអត្ថន័យ"}\n`;
       cursorOffset = replacement.length;
       break;
   }
@@ -675,7 +688,7 @@ function initDownloadTriggers() {
     link.addEventListener("click", () => {
       setTimeout(() => {
         openDownloadModal();
-        showToast("🚀 Download initiated: NoteEditor_v2_Setup.exe");
+        showToast("🚀 កំពុងចាប់ផ្តើមទាញយក: NoteEditor_v2_Setup.exe");
       }, 300);
     });
   });
@@ -731,7 +744,7 @@ function escapeHtml(str) {
 function formatDate(isoStr) {
   try {
     const d = new Date(isoStr);
-    return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+    return d.toLocaleDateString("km-KH", { year: "numeric", month: "short", day: "numeric" });
   } catch (e) {
     return isoStr;
   }
