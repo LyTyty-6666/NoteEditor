@@ -2,10 +2,9 @@
   "name": "noteeditor-web",
   "version": "2.0.0",
   "description": "NoteEditor official website and live community reviews server",
-  "main": "server.js",
   "scripts": {
-    "start": "node --env-file=.env server.js",
-    "dev": "node --env-file=.env --watch server.js"
+    "start": "node --env-file=.env local-server.js",
+    "dev": "node --env-file=.env --watch local-server.js"
   },
   "dependencies": {
     "@libsql/client": "^0.14.0"
