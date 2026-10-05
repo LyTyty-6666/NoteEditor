@@ -1103,8 +1103,17 @@ body {
 .form-group.has-error .form-textarea {
   border-color: #f43f5e;
 }
-.form-group.has-error .form-error-msg {
-  display: block;
+.form-group.has-error .form-error-msg,
+.form-error-msg.visible {
+  display: block !important;
+  color: #f43f5e;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+.form-input.input-error,
+.form-textarea.input-error {
+  border-color: #f43f5e !important;
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.25) !important;
 }
 
 .char-counter {

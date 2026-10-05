@@ -220,9 +220,9 @@ const server = http.createServer(async (req, res) => {
         const comment = (payload.comment || '').trim().slice(0, 1500);
         const tags = Array.isArray(payload.tags) ? payload.tags.slice(0, 5) : [];
 
-        if (!author || !title || comment.length < 10) {
+        if (!author || !title || comment.length < 2) {
           res.writeHead(400, CORS_HEADERS);
-          res.end(JSON.stringify({ error: 'សូមបំពេញព័ត៌មានឱ្យបានត្រឹមត្រូវ និងសរសេរមតិយ៉ាងតិច ១០ តួអក្សរ។' }));
+          res.end(JSON.stringify({ error: 'សូមបំពេញព័ត៌មានឱ្យបានត្រឹមត្រូវ និងសរសេរមតិយ៉ាងតិច ២ តួអក្សរ។' }));
           return;
         }
 

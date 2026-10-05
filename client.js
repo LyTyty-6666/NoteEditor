@@ -444,6 +444,16 @@ function initReviewForm() {
     }
   });
 
+  // Clear error on input
+  [authorInput, titleInput, commentTextarea].forEach(input => {
+    if (!input) return;
+    input.addEventListener("input", () => {
+      input.classList.remove("input-error");
+      const err = input.parentElement?.querySelector(".form-error-msg");
+      if (err) err.classList.remove("visible");
+    });
+  });
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -475,14 +485,17 @@ function initReviewForm() {
       isValid = false;
     }
 
-    // Validate Comment
-    if (commentTextarea.value.trim().length < 10) {
+    // Validate Comment (allow short positive reviews >= 2 characters)
+    if (commentTextarea.value.trim().length < 2) {
       document.getElementById("comment-error-msg")?.classList.add("visible");
       commentTextarea.classList.add("input-error");
       isValid = false;
     }
 
-    if (!isValid) return;
+    if (!isValid) {
+      showToast("⚠️ សូមបំពេញឈ្មោះ ចំណងជើង និងសរសេរមតិយោបល់យ៉ាងតិច ២ តួអក្សរ!");
+      return;
+    }
 
     // Selected Tags
     const checkedTags = Array.from(form.querySelectorAll("input[name='tag']:checked")).map(cb => cb.value);
@@ -529,14 +542,17 @@ function initReviewForm() {
         if (result.comment) {
           newReview = result.comment;
         }
+      } else {
+        const errJson = await res.json().catch(() => ({}));
+        showToast("⚠️ " + (errJson.error || "មិនអាចរក្សាទុកបានទេ"));
       }
     } catch (err) {
       console.warn("Could not save to live API, saved locally:", err);
-    }
-
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalBtnHtml;
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
     }
 
     // Prepend to current list
