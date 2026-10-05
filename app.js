@@ -4,109 +4,36 @@
  */
 
 // =============================================================================
-// 1. Initial Community Seed Reviews (មតិយោបល់គំរូជាភាសាខ្មែរ)
+// 1. Community Reviews (Clean slate - real users only)
 // =============================================================================
-const DEFAULT_REVIEWS = [
-  {
-    id: "rev-1",
-    author: "សុខ ចាន់ដារ៉ា",
-    role: "Senior Frontend Engineer",
-    avatarBg: "linear-gradient(135deg, #10b981, #06b6d4)",
-    rating: 5,
-    title: "ទីបំផុត បានជួបកម្មវិធីកត់ត្រាលើ Windows ដ៏លឿន និងមិនស៊ី RAM ច្រើន!",
-    comment: "ខ្ញុំបានស្វែងរកកម្មវិធីកត់ត្រា Markdown ស្រាលៗជាយូរមកហើយ។ NoteEditor បើកដំណើរការលឿនដូចផ្លេកបន្ទោរ ហើយផ្ទាំង Preview ជាមួយ Syntax Highlighting គឺរលូនខ្លាំងណាស់។ Dark Mode មើលទៅស្រស់ស្អាត ស័ក្តិសមឥតខ្ចោះជាមួយ Windows 11។",
-    tags: ["លឿនរហ័ស", "ផ្ទាំងងងឹតស្អាត", "Markdown ល្អឥតខ្ចោះ"],
-    date: "2026-10-02",
-    helpfulCount: 42,
-    verified: true
-  },
-  {
-    id: "rev-2",
-    author: "គង់ ពិសិដ្ឋ",
-    role: "Technical Writer & Creator",
-    avatarBg: "linear-gradient(135deg, #8b5cf6, #ec4899)",
-    rating: 5,
-    title: "ជំនួសកម្មវិធីសរសេរចាស់ៗដ៏ធ្ងន់ៗទាំងអស់បានយ៉ាងល្អ",
-    comment: "បរិយាកាសការងារដែលគ្មានការរំខានពិតជាអស្ចារ្យណាស់។ ខ្ញុំសរសេរឯកសាររាប់សិបទំព័រនៅទីនេះដោយមិនមានការគាំងទាល់តែសោះ។ ប្រព័ន្ធ Auto-save ជួយសង្គ្រោះឯកសារខ្ញុំបានច្រើនដង។ ហើយអ្វីដែលពិសេសគឺឥតគិតថ្លៃ ១០០% គ្មានការទារលុយប្រចាំខែឡើយ។",
-    tags: ["ឥតគិតថ្លៃ ១០០%", "Markdown ល្អឥតខ្ចោះ", "ទំហំស្រាល (40MB)"],
-    date: "2026-09-28",
-    helpfulCount: 31,
-    verified: true
-  },
-  {
-    id: "rev-3",
-    author: "ជា ស្រីមុំ",
-    role: "និស្សិតវិទ្យាសាស្ត្រកុំព្យូទ័រ",
-    avatarBg: "linear-gradient(135deg, #f59e0b, #ef4444)",
-    rating: 5,
-    title: "ល្អបំផុតសម្រាប់ការកត់ត្រាមេរៀនសាកលវិទ្យាល័យ និងកូដរហ័ស",
-    comment: "ខ្ញុំចូលចិត្តការរក្សាទុកឯកសារជាទម្រង់ .md នៅលើកុំព្យូទ័រផ្ទាល់ដោយមិនចាំបាច់មានអ៊ីនធឺណិត។ រូបមន្តគណិតវិទ្យា និងការបង្ហាញពណ៌កូដជួយដល់ការរៀនមុខវិជ្ជាបច្ចេកវិទ្យាច្រើនណាស់។",
-    tags: ["លឿនរហ័ស", "ផ្ទាំងងងឹតស្អាត", "ឥតគិតថ្លៃ ១០០%"],
-    date: "2026-09-25",
-    helpfulCount: 19,
-    verified: true
-  },
-  {
-    id: "rev-4",
-    author: "វ៉ាន់ សុភ័ក្ត្រ",
-    role: "Product Designer",
-    avatarBg: "linear-gradient(135deg, #06b6d4, #3b82f6)",
-    rating: 5,
-    title: "ការរចនាម៉ូតស្រស់ស្អាត ទំនើប និងមិនរំខានភ្នែក",
-    comment: "ពុម្ពអក្សរ និងចន្លោះឃ្លាមានតុល្យភាពល្អ។ ផ្លូវកាត់ក្តារចុច (Shortcuts) ងាយស្រួលប្រើ ហើយមាន Checklists ស្រាប់ក្នុងចំណាំ ធ្វើឱ្យការរៀបចំកិច្ចការប្រចាំថ្ងៃកាន់តែងាយស្រួល។",
-    tags: ["ផ្ទាំងងងឹតស្អាត", "Markdown ល្អឥតខ្ចោះ"],
-    date: "2026-09-19",
-    helpfulCount: 15,
-    verified: true
-  },
-  {
-    id: "rev-5",
-    author: "ហេង វិសាល",
-    role: "DevOps Engineer",
-    avatarBg: "linear-gradient(135deg, #10b981, #3b82f6)",
-    rating: 4,
-    title: "ឧបករណ៍ដ៏អស្ចារ្យសម្រាប់កត់ត្រារហ័ស និងកែសម្រួល Config YAML",
-    comment: "លឿនមែនទែន ហើយស៊ី RAM តិចបំផុតក្នុង Task Manager (ក្រោម 60MB)។ ជួយការងាររៀបចំម៉ាស៊ីន server បានយ៉ាងរហ័ស និងងាយស្រួល។",
-    tags: ["ទំហំស្រាល (40MB)", "លឿនរហ័ស"],
-    date: "2026-09-14",
-    helpfulCount: 8,
-    verified: true
-  },
-  {
-    id: "rev-6",
-    author: "ម៉េង ស្រីលក្ខណ៍",
-    role: "Fullstack Web Developer",
-    avatarBg: "linear-gradient(135deg, #ec4899, #f59e0b)",
-    rating: 5,
-    title: "ការរក្សាទិន្នន័យក្នុងម៉ាស៊ីន (Offline-first) គឺជាអ្វីដែលខ្ញុំចង់បានបំផុត",
-    comment: "មិនបាច់ Login មិនបាច់បង់ប្រាក់ថ្លៃ AI មិនបាច់ភ័យខ្លាចគេលួចតាមដានទិន្នន័យ។ គ្រាន់តែទាញយក Install ៥ វិនាទី ហើយប្រើបានភ្លាមៗ។ អរគុណក្រុមការងារដែលបង្កើតកម្មវិធីនេះឡើង!",
-    tags: ["ឥតគិតថ្លៃ ១០០%", "លឿនរហ័ស", "ផ្ទាំងងងឹតស្អាត"],
-    date: "2026-09-08",
-    helpfulCount: 27,
-    verified: true
-  }
-];
+const DEFAULT_REVIEWS = [];
 
 // =============================================================================
 // 2. State & Storage Management
 // =============================================================================
-const STORAGE_KEY_REVIEWS = "noteeditor_user_reviews_km_v2";
-const STORAGE_KEY_UPVOTES = "noteeditor_upvoted_ids_km_v2";
+const STORAGE_KEY_REVIEWS = "noteeditor_real_user_reviews_v1";
+const STORAGE_KEY_UPVOTES = "noteeditor_real_upvoted_ids_v1";
 
 function loadReviews() {
   try {
+    // Clear out old mock seed data from previous test keys
+    localStorage.removeItem("noteeditor_user_reviews_km_v2");
+    localStorage.removeItem("noteeditor_user_reviews_km");
+
     const saved = localStorage.getItem(STORAGE_KEY_REVIEWS);
     if (saved) {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+      if (Array.isArray(parsed)) {
+        // Exclude any legacy mock review IDs (rev-1 to rev-6)
+        return parsed.filter(r => !r.id || !/^rev-[1-6]$/.test(r.id));
       }
     }
   } catch (e) {
     console.error("Failed to load reviews from localStorage", e);
   }
-  return [...DEFAULT_REVIEWS];
+  return [];
 }
+
 
 function saveReviews(reviews) {
   try {
@@ -134,6 +61,25 @@ function markReviewUpvoted(id) {
     }
   } catch (e) {
     console.error(e);
+  }
+}
+
+// Fetch live reviews from server (Turso DB)
+async function fetchLiveReviews() {
+  try {
+    const res = await fetch('/api/comments');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        currentReviews = data;
+        saveReviews(currentReviews);
+        updateRatingStats();
+        renderReviews();
+        return;
+      }
+    }
+  } catch (err) {
+    console.log("Turso comments API not reachable, using local storage mode:", err.message);
   }
 }
 
@@ -179,20 +125,59 @@ function updateRatingStats() {
     sum += star;
   });
 
-  const avg = total > 0 ? (sum / total).toFixed(1) : "5.0";
+  const avg = total > 0 ? (sum / total).toFixed(1) : "0.0";
 
   // Display elements
   const avgBigEl = document.getElementById("avg-rating-display");
   const avgStarsEl = document.getElementById("avg-stars-display");
   const totalCountEl = document.getElementById("total-reviews-count");
+  const recBadgeEl = document.querySelector(".recommendation-badge");
+  const navPillEl = document.getElementById("nav-star-pill");
+  const navCountEl = document.getElementById("nav-review-count");
+  const heroTrustEl = document.getElementById("hero-trust-rating");
 
-  if (avgBigEl) avgBigEl.textContent = avg;
+  if (avgBigEl) avgBigEl.textContent = total > 0 ? toKhmerDigits(avg) : "--";
   if (avgStarsEl) {
-    const roundedAvg = Math.round(parseFloat(avg));
-    avgStarsEl.textContent = "★".repeat(roundedAvg) + "☆".repeat(5 - roundedAvg);
+    if (total > 0) {
+      const roundedAvg = Math.round(parseFloat(avg));
+      avgStarsEl.textContent = "★".repeat(roundedAvg) + "☆".repeat(5 - roundedAvg);
+    } else {
+      avgStarsEl.textContent = "☆☆☆☆☆";
+    }
   }
   if (totalCountEl) {
-    totalCountEl.textContent = `ផ្អែកលើការវាយតម្លៃពិតប្រាកដចំនួន ${total}`;
+    totalCountEl.textContent = total > 0
+      ? `ផ្អែកលើការវាយតម្លៃពិតប្រាកដចំនួន ${toKhmerDigits(total)}`
+      : "មិនទាន់មានការវាយតម្លៃនៅឡើយទេ";
+  }
+
+  // Update navbar & hero badges
+  if (navPillEl && navCountEl) {
+    if (total > 0) {
+      navPillEl.textContent = `★ ${toKhmerDigits(avg)}`;
+      navCountEl.textContent = `(${toKhmerDigits(total)} ការវាយតម្លៃ)`;
+    } else {
+      navPillEl.textContent = `★ មតិយោបល់`;
+      navCountEl.textContent = `(សហគមន៍)`;
+    }
+  }
+  if (heroTrustEl) {
+    heroTrustEl.textContent = total > 0
+      ? `ពិន្ទុ ${toKhmerDigits(avg)}/៥.០ (${toKhmerDigits(total)} ការវាយតម្លៃ)`
+      : `ការវាយតម្លៃពិតប្រាកដ`;
+  }
+
+  // Update recommendation badge
+  if (recBadgeEl) {
+    if (total > 0) {
+      const positiveCount = (counts[4] || 0) + (counts[5] || 0);
+      const recPercent = Math.round((positiveCount / total) * 100);
+      recBadgeEl.style.display = "inline-flex";
+      const recSpan = recBadgeEl.querySelector("span");
+      if (recSpan) recSpan.textContent = `${toKhmerDigits(recPercent)}% នៃអ្នកប្រើប្រាស់ណែនាំឱ្យប្រើកម្មវិធីនេះ`;
+    } else {
+      recBadgeEl.style.display = "none";
+    }
   }
 
   // Update breakdown bars
@@ -202,7 +187,7 @@ function updateRatingStats() {
     const percent = total > 0 ? ((counts[i] / total) * 100).toFixed(1) : 0;
 
     if (bar) bar.style.width = `${percent}%`;
-    if (countLabel) countLabel.textContent = counts[i];
+    if (countLabel) countLabel.textContent = toKhmerDigits(counts[i]);
   }
 
   // Update filter pill counts
@@ -211,10 +196,10 @@ function updateRatingStats() {
   const filterCount4 = document.getElementById("filter-count-4");
   const filterCount3 = document.getElementById("filter-count-3");
 
-  if (filterCountAll) filterCountAll.textContent = total;
-  if (filterCount5) filterCount5.textContent = counts[5];
-  if (filterCount4) filterCount4.textContent = counts[4];
-  if (filterCount3) filterCount3.textContent = counts[1] + counts[2] + counts[3];
+  if (filterCountAll) filterCountAll.textContent = toKhmerDigits(total);
+  if (filterCount5) filterCount5.textContent = toKhmerDigits(counts[5]);
+  if (filterCount4) filterCount4.textContent = toKhmerDigits(counts[4]);
+  if (filterCount3) filterCount3.textContent = toKhmerDigits(counts[1] + counts[2] + counts[3]);
 }
 
 // =============================================================================
@@ -224,6 +209,24 @@ function renderReviews(highlightId = null) {
   const container = document.getElementById("reviews-stream");
   const loadMoreBtn = document.getElementById("load-more-reviews-btn");
   if (!container) return;
+
+  // Empty state when no real reviews exist yet
+  if (currentReviews.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 48px 24px; background: var(--bg-card); border-radius: var(--radius-md); border: 1px dashed var(--border-card);">
+        <div style="font-size: 2.5rem; margin-bottom: 12px;">💬</div>
+        <h4 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">មិនទាន់មានមតិយោបល់នៅឡើយទេ</h4>
+        <p style="color: var(--text-secondary); max-width: 440px; margin: 0 auto 20px auto; font-size: 0.95rem; line-height: 1.6;">
+          សូមក្លាយជាមនុស្សដំបូងគេបង្អស់ដែលចែករំលែកបទពិសោធន៍ និងវាយតម្លៃអំពី NoteEditor!
+        </p>
+        <a href="#review-form-anchor" class="btn btn-primary btn-sm">
+          សរសេរការវាយតម្លៃដំបូងគេ ✍️
+        </a>
+      </div>
+    `;
+    if (loadMoreBtn) loadMoreBtn.style.display = "none";
+    return;
+  }
 
   // Filter
   let filtered = currentReviews.filter(r => {
@@ -259,6 +262,7 @@ function renderReviews(highlightId = null) {
     if (loadMoreBtn) loadMoreBtn.style.display = "none";
     return;
   }
+
 
   container.innerHTML = toDisplay.map(r => {
     const isNew = r.id === highlightId ? "is-newly-added" : "";
@@ -335,7 +339,7 @@ window.setFilter = function(filterVal) {
 };
 
 // Global hook for upvotes
-window.handleUpvote = function(reviewId) {
+window.handleUpvote = async function(reviewId) {
   const upvoted = getUpvotedIds();
   if (upvoted.includes(reviewId)) {
     showToast("អ្នកបានបោះឆ្នោតគាំទ្រការវាយតម្លៃនេះរួចហើយ!");
@@ -349,6 +353,17 @@ window.handleUpvote = function(reviewId) {
     saveReviews(currentReviews);
     renderReviews();
     showToast("សូមអរគុណសម្រាប់ការបោះឆ្នោតគាំទ្រ! 👍");
+
+    // Sync upvote with Turso database
+    try {
+      await fetch('/api/upvote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: reviewId })
+      });
+    } catch (e) {
+      console.warn("Failed to sync upvote to server:", e);
+    }
   }
 };
 
@@ -501,6 +516,23 @@ function initReviewForm() {
       helpfulCount: 0,
       verified: true
     };
+
+    // Save to Turso live database
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newReview)
+      });
+      if (res.ok) {
+        const result = await res.json();
+        if (result.comment) {
+          newReview = result.comment;
+        }
+      }
+    } catch (err) {
+      console.warn("Could not save to live API, saved locally:", err);
+    }
 
     if (submitBtn) {
       submitBtn.disabled = false;
@@ -780,10 +812,25 @@ function escapeHtml(str) {
     .replace(/'/g, "&#039;");
 }
 
+const KHMER_DIGITS = ["០", "១", "២", "៣", "៤", "៥", "៦", "៧", "៨", "៩"];
+function toKhmerDigits(num) {
+  if (num === null || num === undefined) return "";
+  return String(num).replace(/[0-9]/g, d => KHMER_DIGITS[d]);
+}
+
+const KHMER_MONTHS = [
+  "មករា", "កុម្ភៈ", "មីនា", "មេសា", "ឧសភា", "មិថុនា",
+  "កក្កដា", "សីហា", "កញ្ញា", "តុលា", "វិច្ឆិកា", "ធ្នូ"
+];
+
 function formatDate(isoStr) {
   try {
     const d = new Date(isoStr);
-    return d.toLocaleDateString("km-KH", { year: "numeric", month: "short", day: "numeric" });
+    if (isNaN(d.getTime())) return isoStr;
+    const day = toKhmerDigits(d.getDate());
+    const month = KHMER_MONTHS[d.getMonth()] || "";
+    const year = toKhmerDigits(d.getFullYear());
+    return `${day} ${month} ${year}`;
   } catch (e) {
     return isoStr;
   }
@@ -793,9 +840,12 @@ function formatDate(isoStr) {
 // 10. Initialization on DOMContentLoaded
 // =============================================================================
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Initial review statistics & render
+  // 1. Initial review statistics & render (cached)
   updateRatingStats();
   renderReviews();
+
+  // Fetch live reviews from Turso cloud database
+  fetchLiveReviews();
 
   // 2. Interactive Star Picker
   initStarPicker();

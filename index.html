@@ -52,8 +52,8 @@
 
       <div class="nav-actions">
         <a href="#reviews" class="nav-review-link" title="អានការវាយតម្លៃពីសហគមន៍">
-          <span class="star-pill">★ 4.9</span>
-          <span class="nav-review-count">(350+ ការវាយតម្លៃ)</span>
+          <span class="star-pill" id="nav-star-pill">★ មតិយោបល់</span>
+          <span class="nav-review-count" id="nav-review-count">(សហគមន៍)</span>
         </a>
         <a href="NoteEditor_v2_Setup.exe" download="NoteEditor_v2_Setup.exe"
           class="btn btn-sm btn-primary nav-download-btn" id="nav-download-btn">
@@ -114,7 +114,7 @@
           <div class="hero-trust-bar">
             <div class="trust-item">
               <div class="stars-gold">★★★★★</div>
-              <span>ពិន្ទុ <strong>4.9/5.0</strong></span>
+              <span id="hero-trust-rating">ការវាយតម្លៃពិតប្រាកដ</span>
             </div>
             <span class="trust-divider">•</span>
             <div class="trust-item">
@@ -180,8 +180,8 @@
           <div class="stat-label">បើកដំណើរការភ្លាមៗ</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number">4.9 ★</div>
-          <div class="stat-label">ពិន្ទុវាយតម្លៃជាមធ្យមពីអ្នកប្រើប្រាស់</div>
+          <div class="stat-number">៥០+</div>
+          <div class="stat-label">គាំទ្រភាសាកូដ &amp; Markdown</div>
         </div>
         <div class="stat-card">
           <div class="stat-number">100%</div>
@@ -351,15 +351,15 @@
         <div class="reviews-dashboard">
           <!-- Left: Big Rating Card -->
           <div class="rating-summary-card">
-            <div class="rating-big-number" id="avg-rating-display">4.9</div>
-            <div class="rating-big-stars" id="avg-stars-display">★★★★★</div>
-            <div class="rating-total-reviews" id="total-reviews-count">ផ្អែកលើការវាយតម្លៃពិតប្រាកដចំនួន ៣៥២</div>
-            <div class="recommendation-badge">
+            <div class="rating-big-number" id="avg-rating-display">--</div>
+            <div class="rating-big-stars" id="avg-stars-display">☆☆☆☆☆</div>
+            <div class="rating-total-reviews" id="total-reviews-count">មិនទាន់មានការវាយតម្លៃនៅឡើយទេ</div>
+            <div class="recommendation-badge" style="display: none;">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                 <path
                   d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
               </svg>
-              <span>៩៨% នៃអ្នកប្រើប្រាស់ណែនាំឱ្យប្រើកម្មវិធីនេះ</span>
+              <span>១០០% នៃអ្នកប្រើប្រាស់ណែនាំឱ្យប្រើកម្មវិធីនេះ</span>
             </div>
           </div>
 
@@ -370,30 +370,30 @@
               <div class="breakdown-row" data-stars="5">
                 <span class="row-star-label">ផ្កាយ ៥</span>
                 <div class="progress-bar-bg">
-                  <div class="progress-bar-fill" id="bar-5" style="width: 92%;"></div>
+                  <div class="progress-bar-fill" id="bar-5" style="width: 0%;"></div>
                 </div>
-                <span class="row-count-label" id="count-5">324</span>
+                <span class="row-count-label" id="count-5">0</span>
               </div>
               <div class="breakdown-row" data-stars="4">
                 <span class="row-star-label">ផ្កាយ ៤</span>
                 <div class="progress-bar-bg">
-                  <div class="progress-bar-fill" id="bar-4" style="width: 6%;"></div>
+                  <div class="progress-bar-fill" id="bar-4" style="width: 0%;"></div>
                 </div>
-                <span class="row-count-label" id="count-4">22</span>
+                <span class="row-count-label" id="count-4">0</span>
               </div>
               <div class="breakdown-row" data-stars="3">
                 <span class="row-star-label">ផ្កាយ ៣</span>
                 <div class="progress-bar-bg">
-                  <div class="progress-bar-fill" id="bar-3" style="width: 1.5%;"></div>
+                  <div class="progress-bar-fill" id="bar-3" style="width: 0%;"></div>
                 </div>
-                <span class="row-count-label" id="count-3">5</span>
+                <span class="row-count-label" id="count-3">0</span>
               </div>
               <div class="breakdown-row" data-stars="2">
                 <span class="row-star-label">ផ្កាយ ២</span>
                 <div class="progress-bar-bg">
-                  <div class="progress-bar-fill" id="bar-2" style="width: 0.3%;"></div>
+                  <div class="progress-bar-fill" id="bar-2" style="width: 0%;"></div>
                 </div>
-                <span class="row-count-label" id="count-2">1</span>
+                <span class="row-count-label" id="count-2">0</span>
               </div>
               <div class="breakdown-row" data-stars="1">
                 <span class="row-star-label">ផ្កាយ ១</span>

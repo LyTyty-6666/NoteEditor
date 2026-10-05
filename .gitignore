@@ -12,6 +12,11 @@ server.err.log
 Thumbs.db
 desktop.ini
 
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
 # IDE & Editor temp files
 .vscode/
 .idea/
