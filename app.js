@@ -143,6 +143,29 @@ let currentSort = "newest";
 let visibleLimit = 5;
 
 // =============================================================================
+// Avatar Gradient Generator
+// =============================================================================
+const AVATAR_GRADIENTS = [
+  "linear-gradient(135deg, #10b981, #06b6d4)",
+  "linear-gradient(135deg, #8b5cf6, #ec4899)",
+  "linear-gradient(135deg, #f59e0b, #ef4444)",
+  "linear-gradient(135deg, #06b6d4, #3b82f6)",
+  "linear-gradient(135deg, #ec4899, #f59e0b)",
+  "linear-gradient(135deg, #3b82f6, #8b5cf6)",
+  "linear-gradient(135deg, #10b981, #f59e0b)"
+];
+
+function getAvatarGradient(name) {
+  let hash = 0;
+  const str = String(name || "U");
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const idx = Math.abs(hash) % AVATAR_GRADIENTS.length;
+  return AVATAR_GRADIENTS[idx];
+}
+
+// =============================================================================
 // 3. Dynamic Rating Statistics & Breakdown
 // =============================================================================
 function updateRatingStats() {
@@ -406,8 +429,16 @@ function initReviewForm() {
     }
   });
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    // Anti-bot honeypot check (hidden field)
+    const honeypot = document.getElementById("website_url_hp");
+    if (honeypot && honeypot.value.trim() !== "") {
+      console.warn("Bot submission blocked via honeypot.");
+      showToast("❌ ការបញ្ជូនត្រូវបានបដិសេធ (Spam Bot Detected)។");
+      return;
+    }
 
     let isValid = true;
 
@@ -444,29 +475,37 @@ function initReviewForm() {
     // Selected Rating
     const ratingVal = parseInt(document.getElementById("form-rating-val").value || "5", 10);
 
-    // Generate colorful avatar background
-    const avatarGradients = [
-      "linear-gradient(135deg, #10b981, #06b6d4)",
-      "linear-gradient(135deg, #8b5cf6, #ec4899)",
-      "linear-gradient(135deg, #f59e0b, #ef4444)",
-      "linear-gradient(135deg, #06b6d4, #3b82f6)",
-      "linear-gradient(135deg, #ec4899, #f59e0b)"
-    ];
-    const randomGradient = avatarGradients[Math.floor(Math.random() * avatarGradients.length)];
+    const submitBtn = document.getElementById("submit-review-btn");
+    const originalBtnHtml = submitBtn ? submitBtn.innerHTML : "";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>កំពុងបញ្ជូន...</span>`;
+    }
 
-    const newReview = {
+    const authorText = authorInput.value.trim();
+    const roleText = roleInput.value.trim() || "អ្នកប្រើប្រាស់ Windows";
+    const titleText = titleInput.value.trim();
+    const commentText = commentTextarea.value.trim();
+    const tagsList = checkedTags.length > 0 ? checkedTags : ["អ្នកប្រើប្រាស់ពិតប្រាកដ"];
+
+    let newReview = {
       id: "rev-" + Date.now(),
-      author: authorInput.value.trim(),
-      role: roleInput.value.trim() || "អ្នកប្រើប្រាស់ Windows",
-      avatarBg: randomGradient,
+      author: authorText,
+      role: roleText,
+      avatarBg: getAvatarGradient(authorText),
       rating: ratingVal,
-      title: titleInput.value.trim(),
-      comment: commentTextarea.value.trim(),
-      tags: checkedTags.length > 0 ? checkedTags : ["អ្នកប្រើប្រាស់ពិតប្រាកដ"],
+      title: titleText,
+      comment: commentText,
+      tags: tagsList,
       date: new Date().toISOString().split("T")[0],
       helpfulCount: 0,
       verified: true
     };
+
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnHtml;
+    }
 
     // Prepend to current list
     currentReviews.unshift(newReview);

@@ -1175,6 +1175,47 @@ body {
   font-weight: 600;
 }
 
+/* Reviews Status / Connection Banner */
+.reviews-status-msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  transition: all var(--transition-fast);
+}
+.reviews-status-msg.hidden {
+  display: none;
+}
+.reviews-status-msg.live-connected {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: var(--accent-emerald-light);
+}
+.reviews-status-msg.fallback-mode {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+}
+.pulse-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 10px var(--accent-emerald);
+  animation: pulse-ring 1.8s infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
 /* Column 2: Reviews List Stream */
 .reviews-cards-stream {
   display: flex;

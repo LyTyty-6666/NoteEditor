@@ -10,7 +10,7 @@
 
 ## 📸 រូបភាពគំរូ (Preview)
 
-![រូបភាពអេក្រង់កម្មវិធី NoteEditor](assets/preview.jpg)
+![រូបភាពអេក្រង់កម្មវិធី NoteEditor](assets/preview.png)
 
 ---
 
@@ -56,3 +56,4 @@
 node server.js
 ```
 រួចបើក Browser ទៅកាន់អាសយដ្ឋាន `http://localhost:3000/`។
+
