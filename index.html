@@ -20,7 +20,7 @@
     href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Kantumruy+Pro:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.4.2_templates">
 </head>
 
 <body>
@@ -36,7 +36,7 @@
         <img src="assets/logo.jpg" alt="រូបសញ្ញា NoteEditor" class="brand-icon" width="38" height="38">
         <div class="brand-text">
           <span class="brand-name">NoteEditor</span>
-          <span class="brand-tag">v2.0</span>
+          <span class="brand-tag">v2.4.2</span>
         </div>
       </a>
 
@@ -45,7 +45,7 @@
           <li><a href="#features">លក្ខណៈពិសេស</a></li>
           <li><a href="#interactive-demo">សាកល្បងផ្ទាល់</a></li>
           <li><a href="#reviews">ការវាយតម្លៃ &amp; មតិយោបល់</a></li>
-          <li><a href="#requirements">លក្ខណៈបច្ចេកទេស</a></li>
+          <li><a href="#requirements">កញ្ចប់ទាញយក (11)</a></li>
           <li><a href="#faq">សំណួរញឹកញាប់</a></li>
         </ul>
       </nav>
@@ -55,14 +55,13 @@
           <span class="star-pill" id="nav-star-pill">★ មតិយោបល់</span>
           <span class="nav-review-count" id="nav-review-count">(សហគមន៍)</span>
         </a>
-        <a href="NoteEditor_v2_Setup.exe" download="NoteEditor_v2_Setup.exe"
-          class="btn btn-sm btn-primary nav-download-btn" id="nav-download-btn">
+        <button type="button" class="btn btn-sm btn-primary nav-download-btn trigger-download-layer" id="nav-download-btn">
           <svg class="icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
             <path
               d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z" />
           </svg>
-          <span>ទាញយកឥតគិតថ្លៃ</span>
-        </a>
+          <span>ទាញយក v2.4.2</span>
+        </button>
       </div>
     </div>
   </header>
@@ -74,21 +73,21 @@
         <div class="hero-content">
           <div class="hero-badge">
             <span class="badge-dot"></span>
-            <span>កំណែ ២.០ ផ្លូវការ • ឥតគិតថ្លៃ ១០០%</span>
+            <span>កំណែ ២.៤.២ ផ្លូវការ • Cross-Platform (Windows, Mac &amp; Linux)</span>
           </div>
 
           <h1 class="hero-title">
-            កម្មវិធីកត់ត្រា និងកែសម្រួល Markdown ដ៏លឿន និងស្អាត <span class="gradient-text">សម្រាប់ Windows</span>
+            កម្មវិធីកត់ត្រា និងកែសម្រួល Markdown ដ៏លឿន និងស្អាត <span class="gradient-text">សម្រាប់ Windows, Mac &amp; Linux</span>
           </h1>
 
           <p class="hero-subtitle">
             កន្លែងកត់ត្រា និងសរសេរកូដដែលគ្មានការរំខាន លឿនដូចផ្លេកបន្ទោរសម្រាប់ឯកសារ និងគម្រោងរបស់អ្នក។ ដំណើរការលើ
-            Windows ដោយមិនប្រើប្រាស់ទំហំ RAM ច្រើន សុវត្ថិភាព គ្មានការតាមដានទិន្នន័យ និងមាន Dark Mode ដ៏ស្រស់ស្អាត។
+            Windows, macOS (Apple Silicon &amp; Intel) និង Linux ដោយមិនប្រើប្រាស់ទំហំ RAM ច្រើន សុវត្ថិភាព គ្មានការតាមដានទិន្នន័យ។
           </p>
 
           <!-- Download Action Bar -->
           <div class="hero-cta-group">
-            <a href="NoteEditor_v2_Setup.exe" download="NoteEditor_v2_Setup.exe"
+            <a href="Tools/NoteEditor_v2.4.2_Setup.exe" download="NoteEditor_v2.4.2_Setup.exe"
               class="btn btn-lg btn-download trigger-download" id="hero-download-btn">
               <div class="btn-download-icon">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
@@ -96,18 +95,313 @@
                 </svg>
               </div>
               <div class="btn-download-text">
-                <span class="btn-download-title">ទាញយកឥតគិតថ្លៃសម្រាប់ Windows</span>
-                <span class="btn-download-sub">NoteEditor_v2_Setup.exe • 40 MB • Windows 10/11</span>
+                <span class="btn-download-title" id="hero-btn-title">ទាញយក NoteEditor v2.4.2</span>
+                <span class="btn-download-sub" id="hero-btn-sub">NoteEditor_v2.4.2_Setup.exe • 56.5 MB • Windows 10/11</span>
               </div>
             </a>
+
+            <button type="button" class="btn btn-lg btn-choose-layer trigger-download-layer active" id="hero-choose-btn" onclick="toggleHeroTemplateDrawer(event)">
+              <div class="btn-choose-layer-icon">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
+                </svg>
+              </div>
+              <div class="btn-choose-text">
+                <span class="btn-choose-title">ជ្រើសរើសគ្រប់ប្រព័ន្ធ (11 កញ្ចប់) <span class="hero-chevron" id="hero-btn-chevron">▲</span></span>
+                <span class="os-mini-badges" id="hero-btn-sub-badges">ចុចមើល Template ទាំងអស់នៅទីនេះ (Click to see all)</span>
+              </div>
+            </button>
 
             <a href="#interactive-demo" class="btn btn-lg btn-secondary">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
               </svg>
-              <span>សាកល្បងលើវេបសាយផ្ទាល់</span>
+              <span>សាកល្បងលើវេបសាយ</span>
             </a>
+          </div>
+
+          <!-- Hero Inline Template Drawer (Show On Here) -->
+          <div class="hero-template-drawer open" id="hero-template-drawer">
+            <div class="hero-drawer-header">
+              <div class="hero-drawer-title-group">
+                <span class="hero-drawer-badge">
+                  <span class="pulse-dot"></span>
+                  11 Release Templates
+                </span>
+                <h4 class="hero-drawer-title">គំរូកញ្ចប់ទាញយកទាំងអស់ (NoteEditor v2.4.2)</h4>
+              </div>
+              <div class="hero-drawer-actions">
+                <button type="button" class="btn-drawer-modal-trigger" onclick="openDownloadModal('all')" title="បើកផ្ទាំងពេញអេក្រង់">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                  <span>ផ្ទាំងធំ</span>
+                </button>
+                <button type="button" class="btn-drawer-close" onclick="toggleHeroTemplateDrawer(event)" title="បង្រួមផ្ទាំង">
+                  <span id="hero-drawer-close-text">បង្រួម ▲</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Platform Tabs -->
+            <div class="hero-drawer-tabs" role="tablist" aria-label="ផ្ទាំងជ្រើសរើសប្រព័ន្ធ">
+              <button type="button" class="hero-tab-btn active" data-tab="all" onclick="switchHeroTab('all')">
+                <span>📦 ទាំងអស់</span>
+                <span class="htab-count">11</span>
+              </button>
+              <button type="button" class="hero-tab-btn" data-tab="windows" onclick="switchHeroTab('windows')">
+                <span>🪟 Windows</span>
+                <span class="htab-count">3</span>
+              </button>
+              <button type="button" class="hero-tab-btn" data-tab="macos" onclick="switchHeroTab('macos')">
+                <span>🍎 macOS</span>
+                <span class="htab-count">4</span>
+              </button>
+              <button type="button" class="hero-tab-btn" data-tab="linux" onclick="switchHeroTab('linux')">
+                <span>🐧 Linux</span>
+                <span class="htab-count">4</span>
+              </button>
+            </div>
+
+            <!-- Live Filter & Search Row -->
+            <div class="hero-drawer-filter">
+              <div class="hero-drawer-search-box">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="search" id="hero-drawer-search" placeholder="ស្វែងរកតាម exe, zip, arm64, mac..." oninput="handleHeroSearch(this.value)" autocomplete="off">
+              </div>
+              <span class="hero-drawer-count" id="hero-drawer-count">បង្ហាញ 11 កញ្ចប់</span>
+            </div>
+
+            <!-- Pre-rendered Package Cards List (11 Packages) -->
+            <div class="hero-template-list" id="hero-template-list">
+              <!-- 1. Windows Setup -->
+              <div class="hero-pkg-card recommended" data-os="windows" data-format="exe" data-name="NoteEditor_v2.4.2_Setup.exe">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-exe">.EXE</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_Setup.exe</span>
+                      <span class="hpkg-tag tag-rec">★ ណែនាំ Windows</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>Windows 10/11</span> • <span>x64</span> • <strong>56.5 MB</strong> • <span>កម្មវិធីដំឡើងស្វ័យប្រវត្តិ</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_Setup.exe" download="NoteEditor_v2.4.2_Setup.exe" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_Setup.exe" data-size="56.5 MB" data-os="windows">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+
+              <!-- 2. Windows x64 Portable -->
+              <div class="hero-pkg-card" data-os="windows" data-format="zip" data-name="NoteEditor_v2.4.2_Windows_x64_Portable.zip">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-zip">.ZIP</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_Windows_x64_Portable.zip</span>
+                      <span class="hpkg-tag tag-portable">មិនបាច់ដំឡើង</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>Windows 10/11</span> • <span>x64 Portable</span> • <strong>83.5 MB</strong> • <span>បើកភ្លាមៗគ្មាន Setup</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_Windows_x64_Portable.zip" download="NoteEditor_v2.4.2_Windows_x64_Portable.zip" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_Windows_x64_Portable.zip" data-size="83.5 MB" data-os="windows">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+
+              <!-- 3. Windows ARM64 Portable -->
+              <div class="hero-pkg-card" data-os="windows" data-format="zip" data-name="NoteEditor_v2.4.2_Windows_ARM64_Portable.zip">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-zip">.ZIP</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_Windows_ARM64_Portable.zip</span>
+                      <span class="hpkg-tag tag-arm">Surface / Copilot+</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>Windows ARM64</span> • <span>Snapdragon</span> • <strong>80.2 MB</strong> • <span>កញ្ចប់ចល័ត ARM</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_Windows_ARM64_Portable.zip" download="NoteEditor_v2.4.2_Windows_ARM64_Portable.zip" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_Windows_ARM64_Portable.zip" data-size="80.2 MB" data-os="windows">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+
+              <!-- 4. macOS Apple Silicon ZIP -->
+              <div class="hero-pkg-card recommended" data-os="macos" data-format="zip" data-name="NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-zip">.ZIP</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip</span>
+                      <span class="hpkg-tag tag-rec">★ ណែនាំ Mac (M1-M4)</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>macOS 12+</span> • <span>Apple Silicon</span> • <strong>44.7 MB</strong> • <span>Standalone App</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip" download="NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip" data-size="44.7 MB" data-os="macos">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+
+              <!-- 5. macOS Apple Silicon TAR.GZ -->
+              <div class="hero-pkg-card" data-os="macos" data-format="targz" data-name="NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.tar.gz">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-targz">.TAR.GZ</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.tar.gz</span>
+                      <span class="hpkg-tag tag-targz">TAR.GZ</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>macOS ARM64</span> • <span>Apple Silicon</span> • <strong>44.7 MB</strong> • <span>បណ្ណសារបង្ហាប់</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.tar.gz" download="NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.tar.gz" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.tar.gz" data-size="44.7 MB" data-os="macos">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+
+              <!-- 6. macOS Intel ZIP -->
+              <div class="hero-pkg-card" data-os="macos" data-format="zip" data-name="NoteEditor_v2.4.2_macOS_Intel_x64.zip">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-zip">.ZIP</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_macOS_Intel_x64.zip</span>
+                      <span class="hpkg-tag tag-intel">Intel Mac</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>macOS Intel</span> • <span>x64</span> • <strong>46.2 MB</strong> • <span>សម្រាប់ Intel Mac</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_macOS_Intel_x64.zip" download="NoteEditor_v2.4.2_macOS_Intel_x64.zip" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_macOS_Intel_x64.zip" data-size="46.2 MB" data-os="macos">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+
+              <!-- 7. macOS Intel TAR.GZ -->
+              <div class="hero-pkg-card" data-os="macos" data-format="targz" data-name="NoteEditor_v2.4.2_macOS_Intel_x64.tar.gz">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-targz">.TAR.GZ</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_macOS_Intel_x64.tar.gz</span>
+                      <span class="hpkg-tag tag-targz">TAR.GZ</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>macOS Intel</span> • <span>x64</span> • <strong>46.2 MB</strong> • <span>បណ្ណសារបង្ហាប់</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_macOS_Intel_x64.tar.gz" download="NoteEditor_v2.4.2_macOS_Intel_x64.tar.gz" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_macOS_Intel_x64.tar.gz" data-size="46.2 MB" data-os="macos">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+
+              <!-- 8. Linux x64 TAR.GZ -->
+              <div class="hero-pkg-card recommended" data-os="linux" data-format="targz" data-name="NoteEditor_v2.4.2_Linux_x64.tar.gz">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-targz">.TAR.GZ</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_Linux_x64.tar.gz</span>
+                      <span class="hpkg-tag tag-rec">★ ណែនាំ Linux</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>Ubuntu / Debian / Fedora / Arch</span> • <span>x64</span> • <strong>40.8 MB</strong> • <span>chmod +x &amp; ./NoteEditor</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_Linux_x64.tar.gz" download="NoteEditor_v2.4.2_Linux_x64.tar.gz" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_Linux_x64.tar.gz" data-size="40.8 MB" data-os="linux">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+
+              <!-- 9. Linux x64 ZIP -->
+              <div class="hero-pkg-card" data-os="linux" data-format="zip" data-name="NoteEditor_v2.4.2_Linux_x64.zip">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-zip">.ZIP</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_Linux_x64.zip</span>
+                      <span class="hpkg-tag tag-zip">ZIP Archive</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>Linux x64</span> • <span>Standalone</span> • <strong>40.8 MB</strong> • <span>ពន្លាហើយបើកភ្លាមៗ</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_Linux_x64.zip" download="NoteEditor_v2.4.2_Linux_x64.zip" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_Linux_x64.zip" data-size="40.8 MB" data-os="linux">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+
+              <!-- 10. Linux ARM64 TAR.GZ -->
+              <div class="hero-pkg-card" data-os="linux" data-format="targz" data-name="NoteEditor_v2.4.2_Linux_arm64.tar.gz">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-targz">.TAR.GZ</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_Linux_arm64.tar.gz</span>
+                      <span class="hpkg-tag tag-arm">Raspberry Pi &amp; ARM</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>Linux ARM64</span> • <span>Raspberry Pi 4/5</span> • <strong>39.0 MB</strong> • <span>chmod +x &amp; run</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_Linux_arm64.tar.gz" download="NoteEditor_v2.4.2_Linux_arm64.tar.gz" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_Linux_arm64.tar.gz" data-size="39.0 MB" data-os="linux">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+
+              <!-- 11. Linux ARM64 ZIP -->
+              <div class="hero-pkg-card" data-os="linux" data-format="zip" data-name="NoteEditor_v2.4.2_Linux_arm64.zip">
+                <div class="hpkg-left">
+                  <span class="hpkg-badge-fmt fmt-zip">.ZIP</span>
+                  <div class="hpkg-info">
+                    <div class="hpkg-title-row">
+                      <span class="hpkg-name">NoteEditor_v2.4.2_Linux_arm64.zip</span>
+                      <span class="hpkg-tag tag-zip">ZIP Archive</span>
+                    </div>
+                    <div class="hpkg-meta">
+                      <span>Linux ARM64</span> • <span>aarch64</span> • <strong>39.0 MB</strong> • <span>Standalone ZIP</span>
+                    </div>
+                  </div>
+                </div>
+                <a href="Tools/NoteEditor_v2.4.2_Linux_arm64.zip" download="NoteEditor_v2.4.2_Linux_arm64.zip" class="hpkg-dl-btn trigger-download" data-file="NoteEditor_v2.4.2_Linux_arm64.zip" data-size="39.0 MB" data-os="linux">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                  <span>ទាញយក</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Drawer Footer Notice -->
+            <div class="hero-drawer-footer">
+              <span class="hdf-shield">🛡️ Standalone Binaries • មិនបាច់ដំឡើង .NET Runtime • គ្មានមេរោគ</span>
+              <button type="button" class="hdf-hub-link" onclick="openDownloadModal('all')">បើកផ្ទាំងពេញអេក្រង់ (All Details) ↗</button>
+            </div>
           </div>
 
           <!-- Trust Proof Signals -->
@@ -328,10 +622,9 @@
             <div class="demo-note">
               <span>ចង់ទទួលបានបទពិសោធន៍ពេញលេញលើកុំព្យូទ័រជាមួយឯកសារមូលដ្ឋាន និង ៥០+ ភាសា?</span>
             </div>
-            <a href="NoteEditor_v2_Setup.exe" download="NoteEditor_v2_Setup.exe"
-              class="btn btn-sm btn-primary trigger-download">
-              ទាញយក NoteEditor_v2_Setup.exe
-            </a>
+            <button type="button" class="btn btn-sm btn-primary trigger-download-layer">
+              ទាញយក NoteEditor v2.4.2 (គ្រប់ប្រព័ន្ធ)
+            </button>
           </div>
         </div>
       </div>
@@ -566,24 +859,167 @@
       <div class="container">
         <div class="download-card-hero">
           <div class="download-hero-content">
-            <span class="section-tag">ទាញយកដោយផ្ទាល់</span>
-            <h2 class="download-hero-title">ទាញយក NoteEditor v2.0 សម្រាប់ Windows</h2>
+            <span class="section-tag">មជ្ឈមណ្ឌលទាញយក</span>
+            <h2 class="download-hero-title">ទាញយក NoteEditor v2.4.2 Cross-Platform</h2>
             <p class="download-hero-desc">
               ទទួលបានកម្មវិធីកត់ត្រា និងកែសម្រួល Markdown ដ៏លឿន និងគ្មានការរំខានលើកុំព្យូទ័ររបស់អ្នកថ្ងៃនេះ។
-              ឥតគិតថ្លៃជារៀងរហូត មិនចាំបាច់ចុះឈ្មោះ គ្មានការតាមដានទិន្នន័យឡើយ។
+              គាំទ្រពេញលេញលើ Windows, macOS និង Linux។ ឥតគិតថ្លៃជារៀងរហូត មិនបាច់ចុះឈ្មោះ គ្មានការតាមដានទិន្នន័យ។
             </p>
 
             <div class="download-cta-row">
-              <a href="NoteEditor_v2_Setup.exe" download="NoteEditor_v2_Setup.exe"
+              <a href="Tools/NoteEditor_v2.4.2_Setup.exe" download="NoteEditor_v2.4.2_Setup.exe"
                 class="btn btn-xl btn-primary trigger-download" id="section-download-btn">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                   <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
                 </svg>
                 <div>
-                  <div class="btn-main-text">ទាញយក NoteEditor_v2_Setup.exe</div>
-                  <div class="btn-sub-text">កម្មវិធីដំឡើងផ្ទាល់ • 40.0 MB • Windows 10/11 64-bit</div>
+                  <div class="btn-main-text">ទាញយក NoteEditor_v2.4.2_Setup.exe</div>
+                  <div class="btn-sub-text">Windows 10/11 64-bit Installer • 56.5 MB (Recommended)</div>
                 </div>
               </a>
+
+              <button type="button" class="btn btn-lg btn-choose-layer trigger-download-layer">
+                <div class="btn-choose-layer-icon">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                    <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
+                  </svg>
+                </div>
+                <div class="btn-choose-text">
+                  <span class="btn-choose-title">បើកផ្ទាំងជ្រើសរើសកញ្ចប់ទាញយក</span>
+                  <span class="os-mini-badges">មើលគ្រប់ 11 កញ្ចប់ (Windows, Mac, Linux)</span>
+                </div>
+              </button>
+            </div>
+
+            <!-- Multi-Platform Hub Grid -->
+            <div class="platform-hub-grid">
+              <!-- Windows Column -->
+              <div class="platform-hub-col">
+                <div class="platform-hub-header">
+                  <div class="platform-hub-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                      <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="platform-hub-name">Windows</div>
+                    <div class="platform-hub-sub">3 កញ្ចប់ (Win 10/11)</div>
+                  </div>
+                </div>
+                <div class="platform-hub-items">
+                  <a href="Tools/NoteEditor_v2.4.2_Setup.exe" download="NoteEditor_v2.4.2_Setup.exe" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Setup.exe (Installer)</div>
+                      <div class="platform-mini-meta">x64 • 56.5 MB • ណែនាំ ★</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                  <a href="Tools/NoteEditor_v2.4.2_Windows_x64_Portable.zip" download="NoteEditor_v2.4.2_Windows_x64_Portable.zip" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Portable ZIP (x64)</div>
+                      <div class="platform-mini-meta">មិនបាច់ដំឡើង • 83.5 MB</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                  <a href="Tools/NoteEditor_v2.4.2_Windows_ARM64_Portable.zip" download="NoteEditor_v2.4.2_Windows_ARM64_Portable.zip" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Portable ZIP (ARM64)</div>
+                      <div class="platform-mini-meta">Surface / ARM • 80.2 MB</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- macOS Column -->
+              <div class="platform-hub-col">
+                <div class="platform-hub-header">
+                  <div class="platform-hub-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.66-.99 1.74-.86 2.76 1.01.08 2.02-.51 2.57-1.26z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="platform-hub-name">macOS</div>
+                    <div class="platform-hub-sub">4 កញ្ចប់ (Apple Silicon &amp; Intel)</div>
+                  </div>
+                </div>
+                <div class="platform-hub-items">
+                  <a href="Tools/NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip" download="NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Apple Silicon (M1/M2/M3/M4) ZIP</div>
+                      <div class="platform-mini-meta">ARM64 • 44.7 MB • ណែនាំ ★</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                  <a href="Tools/NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.tar.gz" download="NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.tar.gz" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Apple Silicon TAR.GZ</div>
+                      <div class="platform-mini-meta">ARM64 • 44.7 MB</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                  <a href="Tools/NoteEditor_v2.4.2_macOS_Intel_x64.zip" download="NoteEditor_v2.4.2_macOS_Intel_x64.zip" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Intel Mac ZIP</div>
+                      <div class="platform-mini-meta">Intel x64 • 46.2 MB</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                  <a href="Tools/NoteEditor_v2.4.2_macOS_Intel_x64.tar.gz" download="NoteEditor_v2.4.2_macOS_Intel_x64.tar.gz" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Intel Mac TAR.GZ</div>
+                      <div class="platform-mini-meta">Intel x64 • 46.2 MB</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Linux Column -->
+              <div class="platform-hub-col">
+                <div class="platform-hub-header">
+                  <div class="platform-hub-icon" style="background: rgba(139, 92, 246, 0.15); color: #c084fc;">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                      <path d="M12 2a4 4 0 0 0-4 4v1.17C6.83 8.32 6 9.77 6 11.5c0 1.29.5 2.42 1.3 3.25-.19.72-.3 1.48-.3 2.25 0 2.21 2.24 4 5 4s5-1.79 5-4c0-.77-.11-1.53-.3-2.25.8-.83 1.3-1.96 1.3-3.25 0-1.73-.83-3.18-2-4.33V6a4 4 0 0 0-4-4zm-1.5 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm3 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="platform-hub-name">Linux</div>
+                    <div class="platform-hub-sub">4 កញ្ចប់ (x64 &amp; ARM64)</div>
+                  </div>
+                </div>
+                <div class="platform-hub-items">
+                  <a href="Tools/NoteEditor_v2.4.2_Linux_x64.tar.gz" download="NoteEditor_v2.4.2_Linux_x64.tar.gz" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Linux x64 TAR.GZ</div>
+                      <div class="platform-mini-meta">Ubuntu/Debian/Arch • 40.8 MB • ណែនាំ ★</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                  <a href="Tools/NoteEditor_v2.4.2_Linux_x64.zip" download="NoteEditor_v2.4.2_Linux_x64.zip" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Linux x64 ZIP</div>
+                      <div class="platform-mini-meta">Standalone • 40.8 MB</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                  <a href="Tools/NoteEditor_v2.4.2_Linux_arm64.tar.gz" download="NoteEditor_v2.4.2_Linux_arm64.tar.gz" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Linux ARM64 TAR.GZ</div>
+                      <div class="platform-mini-meta">Raspberry Pi / ARM • 39.0 MB</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                  <a href="Tools/NoteEditor_v2.4.2_Linux_arm64.zip" download="NoteEditor_v2.4.2_Linux_arm64.zip" class="platform-mini-card trigger-download">
+                    <div>
+                      <div class="platform-mini-name">Linux ARM64 ZIP</div>
+                      <div class="platform-mini-meta">Standalone • 39.0 MB</div>
+                    </div>
+                    <span class="platform-mini-btn">ទាញយក ↓</span>
+                  </a>
+                </div>
+              </div>
             </div>
 
             <!-- Installation steps -->
@@ -591,22 +1027,22 @@
               <div class="step-card">
                 <div class="step-num">1</div>
                 <div class="step-info">
-                  <h4>ទាញយក</h4>
-                  <p>ចុចលើប៊ូតុងដើម្បីទាញយកឯកសារ <code>NoteEditor_v2_Setup.exe</code>។</p>
+                  <h4>ជ្រើសរើស &amp; ទាញយក</h4>
+                  <p>ជ្រើសរើសកញ្ចប់ដែលស័ក្តិសមជាមួយប្រព័ន្ធរបស់អ្នក (Windows, macOS, ឬ Linux)។</p>
                 </div>
               </div>
               <div class="step-card">
                 <div class="step-num">2</div>
                 <div class="step-info">
-                  <h4>ដំឡើងកម្មវិធី</h4>
-                  <p>បើកឯកសារដំឡើង ហើយធ្វើតាមការណែនាំយ៉ាងរហ័ស។</p>
+                  <h4>ដំណើរការកម្មវិធី</h4>
+                  <p>បើកដំណើរការកម្មវិធីដំឡើង ឬពន្លា ZIP/TAR.GZ ហើយបើក <code>NoteEditor</code> ភ្លាមៗ។</p>
                 </div>
               </div>
               <div class="step-card">
                 <div class="step-num">3</div>
                 <div class="step-info">
                   <h4>ចាប់ផ្តើមកត់ត្រា</h4>
-                  <p>បើក NoteEditor ពី Start menu ហើយរីករាយនឹងការសរសេរ!</p>
+                  <p>រីករាយនឹងការកត់ត្រា Markdown និងសរសេរកូដ ៥០+ ភាសា គ្មានការរំខាន!</p>
                 </div>
               </div>
             </div>
@@ -618,8 +1054,8 @@
             <table class="specs-table">
               <tbody>
                 <tr>
-                  <th scope="row">ឈ្មោះឯកសារ</th>
-                  <td><code>NoteEditor_v2_Setup.exe</code></td>
+                  <th scope="row">ឈ្មោះកញ្ចប់កម្មវិធី</th>
+                  <td><code>NoteEditor v2.4.2 (11 កញ្ចប់ Standalone)</code></td>
                 </tr>
                 <tr>
                   <th scope="row">អ្នកអភិវឌ្ឍន៍</th>
@@ -627,23 +1063,23 @@
                 </tr>
                 <tr>
                   <th scope="row">បច្ចេកវិទ្យា</th>
-                  <td>C# .NET 9 Windows Forms &amp; ScintillaNET</td>
+                  <td>C# .NET 9 Avalonia UI &amp; AvaloniaEdit (Multi-Platform)</td>
                 </tr>
                 <tr>
                   <th scope="row">កំណែ</th>
-                  <td>v2.0.0 (កំណែផ្លូវការមានស្ថិរភាព)</td>
+                  <td>v2.4.2 (កំណែផ្លូវការមានស្ថិរភាព Multi-Platform)</td>
                 </tr>
                 <tr>
                   <th scope="row">ទំហំឯកសារ</th>
-                  <td>40.05 MB (41,990,446 bytes)</td>
+                  <td>39.0 MB – 83.5 MB (Standalone គ្មានតម្រូវការ .NET Runtime)</td>
                 </tr>
                 <tr>
                   <th scope="row">ប្រព័ន្ធប្រតិបត្តិការ</th>
-                  <td>Windows 11, Windows 10 (64-bit)</td>
+                  <td>Windows 10/11, macOS 12+, Linux (glibc 2.27+)</td>
                 </tr>
                 <tr>
                   <th scope="row">អង្គចងចាំ (RAM)</th>
-                  <td>256 MB អប្បបរមា (ប្រើជាក់ស្តែងក្រោម 80 MB)</td>
+                  <td>256 MB អប្បបរមា (ប្រើជាក់ស្តែងក្រោម 90 MB)</td>
                 </tr>
                 <tr>
                   <th scope="row">អាជ្ញាប័ណ្ណ</th>
@@ -730,43 +1166,101 @@
     </section>
   </main>
 
-  <!-- Download Completion Modal -->
+  <!-- Download Chooser Layer Modal -->
   <div class="modal-backdrop" id="download-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
-    <div class="modal-card">
+    <div class="modal-card modal-card-layer">
       <button type="button" class="modal-close-btn" id="modal-close-btn" aria-label="បិទផ្ទាំង">&times;</button>
-      <div class="modal-icon-header">
-        <div class="modal-icon-circle">
-          <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
-            <path
-              d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z" />
-          </svg>
+      
+      <!-- Modal Header -->
+      <div class="dl-layer-header">
+        <div class="dl-layer-badge-row">
+          <span class="dl-version-pill">
+            <span class="pulse-dot"></span>
+            NoteEditor v2.4.2 Cross-Platform
+          </span>
+          <span class="badge-rec">✓ Standalone 100% Free</span>
+        </div>
+        <h3 class="dl-layer-title" id="modal-title">
+          ជ្រើសរើសកញ្ចប់ទាញយក NoteEditor v2.4.2
+        </h3>
+        <p class="dl-layer-subtitle">
+          ជ្រើសរើសឯកសារដំឡើង ឬ Portable សម្រាប់ប្រព័ន្ធកុំព្យូទ័ររបស់អ្នក • គ្មានតម្រូវការ .NET Runtime បន្ថែមឡើយ
+        </p>
+
+        <!-- Detected OS Banner -->
+        <div class="detected-os-banner" id="detected-os-banner">
+          <div class="detected-os-left">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+            </svg>
+            <span>រកឃើញប្រព័ន្ធរបស់អ្នក: <strong class="os-pill" id="detected-os-pill">Windows 64-bit</strong></span>
+          </div>
+          <span class="detected-os-tip">កញ្ចប់ណែនាំត្រូវបានរំលេចដោយស្វ័យប្រវត្តិ ✓</span>
         </div>
       </div>
-      <h3 class="modal-title" id="modal-title">អរគុណសម្រាប់ការទាញយក NoteEditor!</h3>
-      <p class="modal-desc">ការទាញយកឯកសារ <strong>NoteEditor_v2_Setup.exe</strong> បានចាប់ផ្តើមដោយស្វ័យប្រវត្តិ។</p>
 
-      <div class="modal-instructions">
-        <div class="modal-step">
-          <span class="m-step-num">1</span>
-          <span>ចុចលើឯកសារ <strong>NoteEditor_v2_Setup.exe</strong> ក្នុងប្រអប់ទាញយកនៃកម្មវិធីរុករករបស់អ្នក។</span>
+      <!-- Live Download Started Notification Banner -->
+      <div class="dl-success-banner" id="dl-success-banner">
+        <div class="dl-success-left">
+          <span>🚀</span>
+          <div>
+            <div>ការទាញយកបានចាប់ផ្តើម: <span class="dl-success-file" id="dl-success-file">NoteEditor_v2.4.2_Setup.exe</span></div>
+            <div style="font-size: 0.78rem; color: #94a3b8;">សូមពិនិត្យមើល Folder Downloads នៃកុំព្យូទ័ររបស់អ្នក</div>
+          </div>
         </div>
-        <div class="modal-step">
-          <span class="m-step-num">2</span>
-          <span>ធ្វើតាមការណែនាំដំឡើងលើ Windows យ៉ាងងាយស្រួល។</span>
-        </div>
-        <div class="modal-step">
-          <span class="m-step-num">3</span>
-          <span>បើក NoteEditor ហើយរីករាយនឹងការសរសេរកំណត់ត្រាដ៏រលូន!</span>
-        </div>
-      </div>
-
-      <div class="modal-actions">
-        <a href="NoteEditor_v2_Setup.exe" download="NoteEditor_v2_Setup.exe" class="btn btn-secondary btn-sm">
-          មិនទាន់ឃើញទាញយក? ចុចទីនេះដើម្បីសាកល្បងម្តងទៀត
+        <a href="Tools/NoteEditor_v2.4.2_Setup.exe" download="NoteEditor_v2.4.2_Setup.exe" class="btn btn-sm btn-secondary" id="dl-retry-link">
+          ទាញយកម្តងទៀត
         </a>
-        <button type="button" class="btn btn-primary btn-sm" id="modal-review-btn">
-          សរសេរការវាយតម្លៃរហ័ស
+      </div>
+
+      <!-- Platform Selection Tabs -->
+      <div class="dl-layer-tabs" role="tablist" aria-label="ជ្រើសរើសប្រព័ន្ធប្រតិបត្តិការ">
+        <button type="button" class="dl-tab-btn active" data-tab="windows" role="tab" aria-selected="true" id="tab-btn-windows">
+          <span>🪟 Windows</span>
+          <span class="tab-count">3</span>
         </button>
+        <button type="button" class="dl-tab-btn" data-tab="macos" role="tab" aria-selected="false" id="tab-btn-macos">
+          <span>🍎 macOS</span>
+          <span class="tab-count">4</span>
+        </button>
+        <button type="button" class="dl-tab-btn" data-tab="linux" role="tab" aria-selected="false" id="tab-btn-linux">
+          <span>🐧 Linux</span>
+          <span class="tab-count">4</span>
+        </button>
+        <button type="button" class="dl-tab-btn" data-tab="all" role="tab" aria-selected="false" id="tab-btn-all">
+          <span>📦 ទាំងអស់</span>
+          <span class="tab-count">11</span>
+        </button>
+      </div>
+
+      <!-- Quick Search & Counter Row -->
+      <div class="dl-filter-row">
+        <div class="dl-search-box">
+          <svg class="dl-search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="search" id="dl-search-input" class="dl-search-input" placeholder="ស្វែងរកតាមឈ្មោះ ឬប្រភេទ (exe, portable, arm64...)..." autocomplete="off" spellcheck="false">
+        </div>
+        <span class="dl-count-pill" id="dl-count-pill">បង្ហាញ 3 ក្នុងចំណោម 11 កញ្ចប់</span>
+      </div>
+
+      <!-- Scrollable Packages List -->
+      <div class="dl-layer-body" id="dl-packages-container">
+        <!-- Rendered dynamically by client.js and initially populated -->
+      </div>
+
+      <!-- Platform Instruction Guide Drawer -->
+      <div class="dl-instructions-drawer" id="dl-instructions-drawer">
+        <div class="dl-instructions-title">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+          </svg>
+          <span id="dl-guide-title">ការណែនាំដំឡើងលើ Windows</span>
+        </div>
+        <div class="dl-instructions-text" id="dl-guide-text">
+          ចុចបើកឯកសារ <code>.exe</code> ដើម្បីដំឡើងស្វ័យប្រវត្តក្នុង Start Menu។ សម្រាប់កញ្ចប់ <code>Portable .zip</code>: ពន្លាឯកសារទៅក្នុង Folder ណាមួយ ហើយចុចបើក <code>NoteEditor.exe</code> ភ្លាមៗដោយមិនបាច់ដំឡើង។
+        </div>
       </div>
     </div>
   </div>
@@ -782,7 +1276,7 @@
           <img src="assets/logo.jpg" alt="រូបសញ្ញា NoteEditor" class="brand-icon" width="32" height="32">
           <span class="brand-name">NoteEditor</span>
         </div>
-        <p class="footer-tagline">ផលិតឡើងយ៉ាងយកចិត្តទុកដាក់សម្រាប់អ្នកសរសេរ អ្នកសរសេរកូដ និងអ្នកសិក្សានៅលើ Windows។</p>
+        <p class="footer-tagline">ផលិតឡើងយ៉ាងយកចិត្តទុកដាក់សម្រាប់អ្នកសរសេរ អ្នកសរសេរកូដ និងអ្នកសិក្សានៅលើ Windows, macOS និង Linux។</p>
         <p class="footer-copyright">&copy; 2026 ក្រុមការងារ NoteEditor។ ឥតគិតថ្លៃសម្រាប់មនុស្សគ្រប់គ្នា។</p>
       </div>
 
@@ -793,17 +1287,17 @@
           <li><a href="#features">លក្ខណៈពិសេស</a></li>
           <li><a href="#interactive-demo">សាកល្បងផ្ទាល់</a></li>
           <li><a href="#reviews">ការវាយតម្លៃ &amp; មតិយោបល់</a></li>
-          <li><a href="#requirements">ទាញយកកម្មវិធីដំឡើង</a></li>
+          <li><a href="#requirements">កញ្ចប់ទាញយក (11)</a></li>
         </ul>
       </div>
 
       <div class="footer-links-col">
-        <h4>ផលិតផល</h4>
+        <h4>ផលិតផល v2.4.2</h4>
         <ul>
-          <li><a href="NoteEditor_v2_Setup.exe" download="NoteEditor_v2_Setup.exe">ទាញយក v2.0 (40 MB)</a></li>
-          <li><a href="#requirements">លក្ខណៈបច្ចេកទេស</a></li>
-          <li><a href="#faq">សំណួរញឹកញាប់</a></li>
-          <li><a href="#reviews">ផ្ញើមតិកែលម្អ</a></li>
+          <li><a href="Tools/NoteEditor_v2.4.2_Setup.exe" download="NoteEditor_v2.4.2_Setup.exe">Windows Installer (56.5 MB)</a></li>
+          <li><a href="Tools/NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip" download="NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip">macOS Apple Silicon (44.7 MB)</a></li>
+          <li><a href="Tools/NoteEditor_v2.4.2_Linux_x64.tar.gz" download="NoteEditor_v2.4.2_Linux_x64.tar.gz">Linux x64 (40.8 MB)</a></li>
+          <li><a href="#" class="trigger-download-layer">បើកផ្ទាំងទាញយកគ្រប់ប្រព័ន្ធ</a></li>
         </ul>
       </div>
 
@@ -819,7 +1313,7 @@
     </div>
   </footer>
 
-  <script src="client.js"></script>
+  <script src="client.js?v=2.4.2_templates"></script>
 </body>
 
 </html>

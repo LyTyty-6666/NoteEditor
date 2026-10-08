@@ -751,56 +751,564 @@ function insertFormatting(textarea, action) {
 }
 
 // =============================================================================
-// 8. Download Modal & Toast Notification
+// 8. Download Chooser Layer & Multi-Platform Package Engine (v2.4.2)
 // =============================================================================
+const DOWNLOAD_PACKAGES = [
+  // Windows
+  {
+    id: "win-setup",
+    os: "windows",
+    name: "NoteEditor_v2.4.2_Setup.exe",
+    path: "Tools/NoteEditor_v2.4.2_Setup.exe",
+    format: "exe",
+    formatLabel: ".EXE",
+    arch: "x64 (64-bit)",
+    size: "56.5 MB",
+    badge: "ណែនាំ (Recommended)",
+    titleKh: "Windows 64-bit Installer",
+    descKh: "កម្មវិធីដំឡើងស្វ័យប្រវត្តក្នុង Start Menu & Desktop (សម្រាប់ Windows 10 & 11)"
+  },
+  {
+    id: "win-portable-x64",
+    os: "windows",
+    name: "NoteEditor_v2.4.2_Windows_x64_Portable.zip",
+    path: "Tools/NoteEditor_v2.4.2_Windows_x64_Portable.zip",
+    format: "zip",
+    formatLabel: ".ZIP",
+    arch: "x64 (64-bit)",
+    size: "83.5 MB",
+    badge: "មិនបាច់ដំឡើង",
+    titleKh: "Windows x64 Portable ZIP",
+    descKh: "កញ្ចប់ចល័ត • ពន្លារួចបើក NoteEditor.exe ភ្លាមៗ (អាចដាក់ក្នុង Flash Drive ប្រើលើគ្រប់កុំព្យូទ័រ)"
+  },
+  {
+    id: "win-portable-arm64",
+    os: "windows",
+    name: "NoteEditor_v2.4.2_Windows_ARM64_Portable.zip",
+    path: "Tools/NoteEditor_v2.4.2_Windows_ARM64_Portable.zip",
+    format: "zip",
+    formatLabel: ".ZIP",
+    arch: "ARM64",
+    size: "80.2 MB",
+    badge: "Surface / ARM",
+    titleKh: "Windows ARM64 Portable ZIP",
+    descKh: "សម្រាប់កុំព្យូទ័រ Windows ប្រើប្រាស់ឈីប ARM (Surface Pro, Copilot+ PC, Snapdragon)"
+  },
+
+  // macOS
+  {
+    id: "mac-apple-silicon-zip",
+    os: "macos",
+    name: "NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip",
+    path: "Tools/NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip",
+    format: "zip",
+    formatLabel: ".ZIP",
+    arch: "Apple Silicon (M1/M2/M3/M4)",
+    size: "44.7 MB",
+    badge: "ណែនាំសម្រាប់ Mac ថ្មី",
+    titleKh: "Apple Silicon Standalone ZIP",
+    descKh: "ដំណើរការលឿនខ្ពស់លើបន្ទះឈីប Apple Silicon • ពន្លារួចចុចបើក NoteEditor.Desktop"
+  },
+  {
+    id: "mac-apple-silicon-tar",
+    os: "macos",
+    name: "NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.tar.gz",
+    path: "Tools/NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.tar.gz",
+    format: "targz",
+    formatLabel: ".TAR.GZ",
+    arch: "Apple Silicon (ARM64)",
+    size: "44.7 MB",
+    badge: "TAR.GZ",
+    titleKh: "Apple Silicon TAR.GZ Archive",
+    descKh: "បណ្ណសារបង្ហាប់ .tar.gz សម្រាប់ macOS Apple Silicon M-series"
+  },
+  {
+    id: "mac-intel-zip",
+    os: "macos",
+    name: "NoteEditor_v2.4.2_macOS_Intel_x64.zip",
+    path: "Tools/NoteEditor_v2.4.2_macOS_Intel_x64.zip",
+    format: "zip",
+    formatLabel: ".ZIP",
+    arch: "Intel 64-bit",
+    size: "46.2 MB",
+    badge: "Intel Mac",
+    titleKh: "macOS Intel x64 ZIP",
+    descKh: "សម្រាប់កុំព្យូទ័រ Mac ជំនាន់មុនដែលប្រើប្រាស់ប្រព័ន្ធដំណើរការ Intel CPU"
+  },
+  {
+    id: "mac-intel-tar",
+    os: "macos",
+    name: "NoteEditor_v2.4.2_macOS_Intel_x64.tar.gz",
+    path: "Tools/NoteEditor_v2.4.2_macOS_Intel_x64.tar.gz",
+    format: "targz",
+    formatLabel: ".TAR.GZ",
+    arch: "Intel 64-bit",
+    size: "46.2 MB",
+    badge: "TAR.GZ",
+    titleKh: "macOS Intel TAR.GZ Archive",
+    descKh: "បណ្ណសារបង្ហាប់ .tar.gz សម្រាប់ macOS Intel x64"
+  },
+
+  // Linux
+  {
+    id: "linux-x64-tar",
+    os: "linux",
+    name: "NoteEditor_v2.4.2_Linux_x64.tar.gz",
+    path: "Tools/NoteEditor_v2.4.2_Linux_x64.tar.gz",
+    format: "targz",
+    formatLabel: ".TAR.GZ",
+    arch: "x64 (64-bit)",
+    size: "40.8 MB",
+    badge: "ណែនាំសម្រាប់ Linux",
+    titleKh: "Linux x64 TAR.GZ (Recommended)",
+    descKh: "សម្រាប់ Ubuntu, Debian, Fedora, Arch Linux, Linux Mint • គ្មានតម្រូវការ .NET Runtime"
+  },
+  {
+    id: "linux-x64-zip",
+    os: "linux",
+    name: "NoteEditor_v2.4.2_Linux_x64.zip",
+    path: "Tools/NoteEditor_v2.4.2_Linux_x64.zip",
+    format: "zip",
+    formatLabel: ".ZIP",
+    arch: "x64 (64-bit)",
+    size: "40.8 MB",
+    badge: "ZIP",
+    titleKh: "Linux x64 Standalone ZIP",
+    descKh: "កញ្ចប់ ZIP Standalone សម្រាប់ Linux 64-bit"
+  },
+  {
+    id: "linux-arm64-tar",
+    os: "linux",
+    name: "NoteEditor_v2.4.2_Linux_arm64.tar.gz",
+    path: "Tools/NoteEditor_v2.4.2_Linux_arm64.tar.gz",
+    format: "targz",
+    formatLabel: ".TAR.GZ",
+    arch: "ARM64 (aarch64)",
+    size: "39.0 MB",
+    badge: "Raspberry Pi & ARM",
+    titleKh: "Linux ARM64 TAR.GZ",
+    descKh: "សម្រាប់ Raspberry Pi 4/5, Asahi Linux, និងម៉ាស៊ីនបម្រើ Linux ARM64"
+  },
+  {
+    id: "linux-arm64-zip",
+    os: "linux",
+    name: "NoteEditor_v2.4.2_Linux_arm64.zip",
+    path: "Tools/NoteEditor_v2.4.2_Linux_arm64.zip",
+    format: "zip",
+    formatLabel: ".ZIP",
+    arch: "ARM64 (aarch64)",
+    size: "39.0 MB",
+    badge: "ZIP",
+    titleKh: "Linux ARM64 Standalone ZIP",
+    descKh: "កញ្ចប់ ZIP សម្រាប់ Linux ARM64 (aarch64)"
+  }
+];
+
+const PLATFORM_GUIDES = {
+  windows: {
+    title: "ការណែនាំដំឡើងលើ Windows",
+    text: "ចុចបើកឯកសារ <code>.exe</code> ដើម្បីដំឡើងស្វ័យប្រវត្តក្នុង Start Menu។ សម្រាប់កញ្ចប់ <code>Portable .zip</code>: ពន្លាឯកសារទៅក្នុង Folder ណាមួយ ហើយចុចបើក <code>NoteEditor.exe</code> ភ្លាមៗដោយមិនបាច់ដំឡើង។"
+  },
+  macos: {
+    title: "ការណែនាំដំណើរការលើ macOS",
+    text: "ពន្លាឯកសារ <code>.zip</code> ឬ <code>.tar.gz</code> រួចចុចទ្វេដងលើ <code>NoteEditor.Desktop</code>។ ប្រសិនបើ macOS Gatekeeper បង្ហាញការជូនដំណឹងសុវត្ថិភាព: ចុចស្តាំ (Right-Click) លើឯកសារ > ជ្រើសរើស <strong>Open</strong> > ចុច <strong>Open</strong> ម្តងទៀត។"
+  },
+  linux: {
+    title: "ការណែនាំដំណើរការលើ Linux",
+    text: "ពន្លាឯកសាររួចបើក Terminal ក្នុង Folder នោះ ហើយវាយបញ្ជា: <code>chmod +x NoteEditor.Desktop && ./NoteEditor.Desktop</code> ដើម្បីដំណើរការកម្មវិធីភ្លាមៗ។"
+  },
+  all: {
+    title: "កញ្ចប់ Standalone ទាំងអស់",
+    text: "កញ្ចប់ទាំងអស់សុទ្ធសឹងជា Standalone Binaries ដែលបានបង្កប់ Runtime រួចជាស្រេច — អ្នកប្រើប្រាស់មិនចាំបាច់ដំឡើង .NET SDK ឬ Runtime បន្ថែមឡើយ។"
+  }
+};
+
+let currentLayerTab = "windows";
+let currentSearchQuery = "";
+let detectedUserOS = "windows";
+
+function detectSystemOS() {
+  const ua = (navigator.userAgent || '').toLowerCase();
+  const platform = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '').toLowerCase();
+
+  if (platform.includes('win') || ua.includes('windows')) {
+    const isArm = ua.includes('arm64') || ua.includes('arm');
+    return {
+      os: 'windows',
+      label: isArm ? 'Windows ARM64' : 'Windows 64-bit',
+      recommendedFile: 'NoteEditor_v2.4.2_Setup.exe',
+      recommendedSize: '56.5 MB',
+      recommendedSub: 'NoteEditor_v2.4.2_Setup.exe • 56.5 MB • Windows 10/11'
+    };
+  }
+
+  if (platform.includes('mac') || ua.includes('macintosh') || ua.includes('mac os')) {
+    return {
+      os: 'macos',
+      label: 'macOS (Apple Silicon & Intel)',
+      recommendedFile: 'NoteEditor_v2.4.2_macOS_AppleSilicon_ARM64.zip',
+      recommendedSize: '44.7 MB',
+      recommendedSub: 'Apple Silicon ARM64 • 44.7 MB • macOS 12+'
+    };
+  }
+
+  if (platform.includes('linux') || ua.includes('linux') || ua.includes('x11')) {
+    const isArm = ua.includes('arm') || ua.includes('aarch64');
+    return {
+      os: 'linux',
+      label: isArm ? 'Linux ARM64' : 'Linux x64',
+      recommendedFile: isArm ? 'NoteEditor_v2.4.2_Linux_arm64.tar.gz' : 'NoteEditor_v2.4.2_Linux_x64.tar.gz',
+      recommendedSize: isArm ? '39.0 MB' : '40.8 MB',
+      recommendedSub: isArm ? 'Linux ARM64 • 39.0 MB' : 'Linux x64 • 40.8 MB'
+    };
+  }
+
+  return {
+    os: 'windows',
+    label: 'Windows 64-bit',
+    recommendedFile: 'NoteEditor_v2.4.2_Setup.exe',
+    recommendedSize: '56.5 MB',
+    recommendedSub: 'NoteEditor_v2.4.2_Setup.exe • 56.5 MB • Windows 10/11'
+  };
+}
+
+// =============================================================================
+// Hero Inline Template Drawer ("Show On Here") Controller
+// =============================================================================
+let currentHeroTab = "all";
+let currentHeroSearch = "";
+
+function toggleHeroTemplateDrawer(event) {
+  if (event) {
+    if (typeof event.preventDefault === "function") event.preventDefault();
+    if (typeof event.stopPropagation === "function") event.stopPropagation();
+  }
+  const drawer = document.getElementById("hero-template-drawer");
+  const chevron = document.getElementById("hero-btn-chevron");
+  const subBadges = document.getElementById("hero-btn-sub-badges");
+  const chooseBtn = document.getElementById("hero-choose-btn");
+  if (!drawer) return;
+
+  const isOpen = drawer.classList.contains("open");
+  if (isOpen) {
+    drawer.classList.remove("open");
+    if (chevron) chevron.textContent = "▼";
+    if (subBadges) subBadges.textContent = "ចុចមើល Template ទាំងអស់នៅទីនេះ (Click to see all)";
+    if (chooseBtn) chooseBtn.classList.remove("active");
+  } else {
+    drawer.classList.add("open");
+    if (chevron) chevron.textContent = "▲";
+    if (subBadges) subBadges.textContent = "កំពុងបង្ហាញ Template ទាំង ១១ (Opened)";
+    if (chooseBtn) chooseBtn.classList.add("active");
+    drawer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+}
+
+function switchHeroTab(tab) {
+  currentHeroTab = tab;
+  document.querySelectorAll(".hero-tab-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
+  });
+  filterHeroCards();
+}
+
+function handleHeroSearch(query) {
+  currentHeroSearch = (query || "").trim().toLowerCase();
+  filterHeroCards();
+}
+
+function filterHeroCards() {
+  const cards = document.querySelectorAll(".hero-pkg-card");
+  const countEl = document.getElementById("hero-drawer-count");
+  let visibleCount = 0;
+
+  cards.forEach(card => {
+    const cardOs = card.getAttribute("data-os") || "";
+    const cardText = (card.textContent || "").toLowerCase();
+    const matchesTab = currentHeroTab === "all" || cardOs === currentHeroTab;
+    const matchesSearch = !currentHeroSearch || cardText.includes(currentHeroSearch);
+
+    if (matchesTab && matchesSearch) {
+      card.classList.remove("filtered-out");
+      visibleCount++;
+    } else {
+      card.classList.add("filtered-out");
+    }
+  });
+
+  if (countEl) {
+    countEl.textContent = `បង្ហាញ ${visibleCount} ក្នុងចំណោម ${cards.length} កញ្ចប់`;
+  }
+}
+
+// Immediate global exposure for inline onclick attributes
+window.toggleHeroTemplateDrawer = toggleHeroTemplateDrawer;
+window.switchHeroTab = switchHeroTab;
+window.handleHeroSearch = handleHeroSearch;
+window.filterHeroCards = filterHeroCards;
+
 function initDownloadTriggers() {
   const modal = document.getElementById("download-modal");
   const closeBtn = document.getElementById("modal-close-btn");
-  const modalReviewBtn = document.getElementById("modal-review-btn");
+  const searchInput = document.getElementById("dl-search-input");
+  const packagesContainer = document.getElementById("dl-packages-container");
+  const countPill = document.getElementById("dl-count-pill");
+  const detectedPill = document.getElementById("detected-os-pill");
+  const successBanner = document.getElementById("dl-success-banner");
+  const successFile = document.getElementById("dl-success-file");
+  const retryLink = document.getElementById("dl-retry-link");
+  const guideTitle = document.getElementById("dl-guide-title");
+  const guideText = document.getElementById("dl-guide-text");
 
-  function openDownloadModal() {
+  // 1. Detect user OS & adapt Hero download button
+  const userOSInfo = detectSystemOS();
+  detectedUserOS = userOSInfo.os;
+  currentLayerTab = detectedUserOS;
+
+  if (detectedPill) {
+    detectedPill.textContent = userOSInfo.label;
+  }
+
+  const heroBtn = document.getElementById("hero-download-btn");
+  const heroBtnTitle = document.getElementById("hero-btn-title");
+  const heroBtnSub = document.getElementById("hero-btn-sub");
+  if (heroBtn && heroBtnTitle && heroBtnSub) {
+    heroBtn.setAttribute("href", "Tools/" + userOSInfo.recommendedFile);
+    heroBtn.setAttribute("download", userOSInfo.recommendedFile);
+    heroBtnTitle.textContent = "ទាញយក NoteEditor v2.4.2";
+    heroBtnSub.textContent = userOSInfo.recommendedSub;
+  }
+
+  function openDownloadModal(initialTab) {
+    if (initialTab && ["windows", "macos", "linux", "all"].includes(initialTab)) {
+      currentLayerTab = initialTab;
+    }
+    updateTabButtons();
+    renderLayerPackages();
     if (modal) {
       modal.removeAttribute("hidden");
+      document.body.style.overflow = "hidden";
+      if (searchInput) {
+        setTimeout(() => searchInput.focus(), 150);
+      }
     }
   }
 
   function closeDownloadModal() {
     if (modal) {
       modal.setAttribute("hidden", "true");
+      document.body.style.overflow = "";
     }
   }
 
-  // Intercept all download trigger links to also display confirmation modal
-  document.querySelectorAll(".trigger-download, a[download]").forEach(link => {
-    link.addEventListener("click", () => {
-      setTimeout(() => {
-        openDownloadModal();
-        showToast("🚀 កំពុងចាប់ផ្តើមទាញយក: NoteEditor_v2_Setup.exe");
-      }, 300);
+  function updateTabButtons() {
+    document.querySelectorAll(".dl-tab-btn").forEach(btn => {
+      const tab = btn.getAttribute("data-tab");
+      const isActive = tab === currentLayerTab;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+
+    const guide = PLATFORM_GUIDES[currentLayerTab] || PLATFORM_GUIDES.windows;
+    if (guideTitle) guideTitle.textContent = guide.title;
+    if (guideText) guideText.innerHTML = guide.text;
+  }
+
+  function renderLayerPackages() {
+    if (!packagesContainer) return;
+
+    const query = currentSearchQuery.trim().toLowerCase();
+    const filtered = DOWNLOAD_PACKAGES.filter(pkg => {
+      const matchesTab = currentLayerTab === "all" || pkg.os === currentLayerTab;
+      if (!matchesTab) return false;
+      if (!query) return true;
+      return (
+        pkg.name.toLowerCase().includes(query) ||
+        pkg.format.toLowerCase().includes(query) ||
+        pkg.arch.toLowerCase().includes(query) ||
+        pkg.titleKh.toLowerCase().includes(query) ||
+        pkg.descKh.toLowerCase().includes(query)
+      );
+    });
+
+    if (countPill) {
+      countPill.textContent = `បង្ហាញ ${filtered.length} ក្នុងចំណោម ${DOWNLOAD_PACKAGES.length} កញ្ចប់`;
+    }
+
+    if (filtered.length === 0) {
+      packagesContainer.innerHTML = `
+        <div class="dl-empty-state">
+          <p>🔍 មិនមានកញ្ចប់ទាញយកដែលត្រូវនឹង "<strong>${escapeHtml(query)}</strong>" ឡើយ។</p>
+          <button type="button" class="btn btn-sm btn-secondary" style="margin-top: 10px;" id="dl-reset-search-btn">
+            សម្អាតការស្វែងរក
+          </button>
+        </div>
+      `;
+      const resetBtn = document.getElementById("dl-reset-search-btn");
+      if (resetBtn && searchInput) {
+        resetBtn.addEventListener("click", () => {
+          searchInput.value = "";
+          currentSearchQuery = "";
+          renderLayerPackages();
+        });
+      }
+      return;
+    }
+
+    packagesContainer.innerHTML = filtered.map(pkg => {
+      const isRec = pkg.badge && pkg.badge.includes("ណែនាំ");
+      return `
+        <div class="dl-package-card ${isRec ? 'recommended' : ''}">
+          <div class="dl-card-left">
+            <div class="dl-format-icon format-${pkg.format}">
+              ${pkg.formatLabel}
+            </div>
+            <div class="dl-card-details">
+              <div class="dl-card-title-row">
+                <span class="dl-file-name">${escapeHtml(pkg.name)}</span>
+                ${isRec ? `<span class="badge-rec">★ ${escapeHtml(pkg.badge)}</span>` : (pkg.badge ? `<span class="badge-badge">${escapeHtml(pkg.badge)}</span>` : '')}
+              </div>
+              <div class="dl-card-meta">
+                <span class="dl-meta-chip">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/>
+                  </svg>
+                  ${escapeHtml(pkg.arch)}
+                </span>
+                <span>•</span>
+                <span class="dl-meta-chip">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+                  </svg>
+                  ${escapeHtml(pkg.size)}
+                </span>
+                <span>•</span>
+                <span>${escapeHtml(pkg.titleKh)}</span>
+              </div>
+              <div class="dl-card-desc">${escapeHtml(pkg.descKh)}</div>
+            </div>
+          </div>
+          <div class="dl-card-action">
+            <a href="${escapeHtml(pkg.path)}" download="${escapeHtml(pkg.name)}" 
+               class="btn btn-sm btn-primary btn-dl-item trigger-download"
+               data-file="${escapeHtml(pkg.name)}"
+               data-size="${escapeHtml(pkg.size)}"
+               data-os="${escapeHtml(pkg.os)}">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+              </svg>
+              <span>ទាញយក (${escapeHtml(pkg.size)})</span>
+            </a>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Attach click listeners to newly rendered download buttons inside modal
+    packagesContainer.querySelectorAll(".btn-dl-item").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const fileName = btn.getAttribute("data-file") || "NoteEditor";
+        const fileSize = btn.getAttribute("data-size") || "";
+        const fileOs = btn.getAttribute("data-os") || "windows";
+        handleDownloadTrigger(fileName, fileSize, fileOs);
+      });
+    });
+  }
+
+  function handleDownloadTrigger(fileName, fileSize, fileOs) {
+    showToast(`🚀 កំពុងទាញយក: ${fileName} (${fileSize})`);
+
+    if (successBanner && successFile) {
+      successFile.textContent = fileName;
+      successBanner.classList.add("show");
+      if (retryLink) {
+        retryLink.setAttribute("href", "Tools/" + fileName);
+        retryLink.setAttribute("download", fileName);
+      }
+    }
+
+    // Switch guide to this OS if not already active
+    if (fileOs && fileOs !== currentLayerTab && currentLayerTab !== "all") {
+      currentLayerTab = fileOs;
+      updateTabButtons();
+      renderLayerPackages();
+    }
+  }
+
+  // Bind tab click events
+  document.querySelectorAll(".dl-tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentLayerTab = btn.getAttribute("data-tab");
+      updateTabButtons();
+      renderLayerPackages();
     });
   });
 
+  // Bind live search
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      currentSearchQuery = e.target.value;
+      renderLayerPackages();
+    });
+  }
+
+  // Bind all buttons that open the download chooser layer
+  document.querySelectorAll(".trigger-download-layer").forEach(el => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (el.id === "hero-choose-btn") {
+        toggleHeroTemplateDrawer(e);
+      } else {
+        const initialTab = el.getAttribute("data-tab") || detectedUserOS;
+        openDownloadModal(initialTab);
+      }
+    });
+  });
+
+  // Intercept any direct download clicks on the page
+  document.querySelectorAll("a.trigger-download, a[download]").forEach(link => {
+    link.addEventListener("click", () => {
+      const href = link.getAttribute("href") || "";
+      const fileName = link.getAttribute("download") || href.split("/").pop() || "NoteEditor";
+      showToast(`🚀 កំពុងចាប់ផ្តើមទាញយក: ${fileName}`);
+      if (successBanner && successFile) {
+        successFile.textContent = fileName;
+        successBanner.classList.add("show");
+        if (retryLink) {
+          retryLink.setAttribute("href", href);
+          retryLink.setAttribute("download", fileName);
+        }
+      }
+    });
+  });
+
+  // Close button
   if (closeBtn) {
     closeBtn.addEventListener("click", closeDownloadModal);
   }
 
+  // Backdrop click to close
   if (modal) {
     modal.addEventListener("click", (e) => {
       if (e.target === modal) closeDownloadModal();
     });
   }
 
-  if (modalReviewBtn) {
-    modalReviewBtn.addEventListener("click", () => {
+  // Keyboard ESC to close
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal && !modal.hasAttribute("hidden")) {
       closeDownloadModal();
-      const reviewSection = document.getElementById("reviews");
-      if (reviewSection) {
-        reviewSection.scrollIntoView({ behavior: "smooth" });
-        const nameInput = document.getElementById("review-author");
-        if (nameInput) setTimeout(() => nameInput.focus(), 600);
-      }
-    });
-  }
+    }
+  });
+
+  // Expose global methods for testing & direct invocation
+  window.openDownloadModal = openDownloadModal;
+  window.closeDownloadModal = closeDownloadModal;
+  window.DOWNLOAD_PACKAGES = DOWNLOAD_PACKAGES;
+
+  // Initial render
+  updateTabButtons();
+  renderLayerPackages();
 }
 
 function showToast(message, duration = 4000) {

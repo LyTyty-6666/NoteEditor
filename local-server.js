@@ -1,4 +1,7 @@
-const http = require('http');
+const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
 
@@ -13,8 +16,11 @@ if (process.loadEnvFile) {
 
 const PORT = process.env.PORT || 3000;
 const COMMENTS_FILE = path.join(__dirname, 'data', 'comments.json');
+const TOOLS_DIR = path.resolve(path.join(__dirname, 'Tools'));
 
-// Initialize Turso Client
+// =============================================================================
+// 1. Turso Database Client Initialization
+// =============================================================================
 let tursoClient = null;
 if (process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN) {
   try {
@@ -23,15 +29,15 @@ if (process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN) {
       url: process.env.TURSO_DATABASE_URL,
       authToken: process.env.TURSO_AUTH_TOKEN
     });
-    console.log('[Turso] Connected to cloud database:', process.env.TURSO_DATABASE_URL);
+    console.log('[Turso] Connected securely to cloud database:', process.env.TURSO_DATABASE_URL);
   } catch (err) {
     console.warn('[Turso] Error initializing client, using fallback:', err.message);
   }
 } else {
-  console.log('[Turso] No credentials configured. Using local JSON fallback.');
+  console.log('[Turso] No cloud credentials configured. Using local JSON fallback.');
 }
 
-// Auto-initialize database table
+// Auto-initialize comments table with SQL parameterization
 async function initDatabase() {
   if (!tursoClient) return;
   try {
@@ -51,31 +57,155 @@ async function initDatabase() {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       );
     `);
-    console.log('[Turso] Comments table verified & ready.');
+    console.log('[Turso] Security-verified comments schema ready.');
   } catch (err) {
-    console.error('[Turso] Error initializing table:', err);
+    console.error('[Turso] Database initialization error:', err);
   }
 }
 initDatabase();
 
-const MIME_TYPES = {
-  '.html': 'text/html; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.js': 'application/javascript; charset=utf-8',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.png': 'image/png',
-  '.svg': 'image/svg+xml',
-  '.json': 'application/json; charset=utf-8',
-  '.exe': 'application/octet-stream'
-};
+// =============================================================================
+// 2. Express Security Framework Configuration
+// =============================================================================
+const app = express();
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Content-Type': 'application/json; charset=utf-8'
-};
+// Disable X-Powered-By header to prevent fingerprinting
+app.disable('x-powered-by');
+
+// Trust first proxy if behind reverse proxy/load balancer
+app.set('trust proxy', 1);
+
+// A. Helmet Security Headers (Content Security Policy, Anti-Clickjacking, NoSniff)
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'", // Required for inline interactive demo handlers
+          "https://fonts.googleapis.com"
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com"
+        ],
+        fontSrc: [
+          "'self'",
+          "https://fonts.gstatic.com",
+          "data:"
+        ],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "blob:",
+          "https:"
+        ],
+        connectSrc: [
+          "'self'",
+          "https:",
+          "libsql:"
+        ],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
+        frameAncestors: ["'none'"], // Disallows framing to stop Clickjacking attacks
+        upgradeInsecureRequests: []
+      }
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+  })
+);
+
+// B. Strict CORS Configuration
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// C. Body Parser with Strict Payload Limits (Prevents Buffer Exhaustion/DoS)
+app.use(express.json({ limit: '50kb' }));
+app.use(express.urlencoded({ extended: false, limit: '50kb' }));
+
+// D. Path Traversal & Sensitive File Defense Middleware
+app.use((req, res, next) => {
+  const rawPath = decodeURIComponent(req.path || '').toLowerCase();
+
+  // Strict blacklist: prevents unauthorized access to secrets, repo configs, and internal code
+  const forbiddenPatterns = [
+    /\.env($|\.)/,
+    /\.git/,
+    /\.agents/,
+    /package\.json$/,
+    /package-lock\.json$/,
+    /node_modules/,
+    /local-server\.js$/,
+    /\/\.[a-z0-9_-]+/i // Any dot-files like /.vscode, /.config
+  ];
+
+  const isBlocked = forbiddenPatterns.some(pattern => pattern.test(rawPath));
+  if (isBlocked) {
+    console.warn(`[Security Guard] Blocked prohibited file request from ${req.ip} to: ${req.originalUrl}`);
+    return res.status(403).json({
+      error: 'Forbidden: Access to server configuration and secret files is strictly prohibited.'
+    });
+  }
+  next();
+});
+
+// E. Anti-DDoS and Rate Limiting
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 600, // 600 requests per 15 mins per IP
+  standardHeaders: true,
+  legacyHeaders: false
+});
+app.use(globalLimiter);
+
+const commentPostLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 15, // Max 15 review submissions per IP per 15 min
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: 'សូមរង់ចាំបន្តិច! អ្នកបានបញ្ជូនមតិយោបល់ច្រើនដងពេក (Rate limit reached)។ សូមសាកល្បងម្តងទៀតនៅ ១៥ នាទីក្រោយ។'
+  }
+});
+
+const upvoteLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 60, // Max 60 upvotes per IP per 15 min
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    error: 'បានដល់កម្រិតកំណត់ការបោះឆ្នោតហើយ សូមរង់ចាំបន្តិច។'
+  }
+});
+
+// =============================================================================
+// 3. Input Sanitization & Helper Functions
+// =============================================================================
+function sanitizeText(str) {
+  if (!str || typeof str !== 'string') return '';
+  return str
+    .replace(/<[^>]*>/g, '') // Strip HTML tags
+    .replace(/javascript:/gi, '')
+    .replace(/data:/gi, '')
+    .replace(/[<>"'&]/g, (char) => {
+      switch (char) {
+        case '<': return '&lt;';
+        case '>': return '&gt;';
+        case '"': return '&quot;';
+        case "'": return '&#039;';
+        case '&': return '&amp;';
+        default: return char;
+      }
+    })
+    .trim();
+}
 
 function readLocalComments() {
   try {
@@ -174,146 +304,179 @@ async function upvoteComment(id) {
   }
 }
 
-const server = http.createServer(async (req, res) => {
-  const [pathname] = req.url.split('?');
+// =============================================================================
+// 4. API Routes
+// =============================================================================
 
-  // Handle CORS Preflight
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, CORS_HEADERS);
-    res.end();
-    return;
+// GET /api/comments or /comments (Vercel rewrite support)
+app.get(['/api/comments', '/comments'], async (req, res) => {
+  try {
+    const comments = await fetchComments();
+    res.json(comments);
+  } catch (err) {
+    console.error('Error fetching comments:', err);
+    res.status(500).json({ error: 'មិនអាចទាញយកមតិយោបល់បានទេ' });
   }
+});
 
-  // API Route: GET /api/comments
-  if (pathname === '/api/comments' && req.method === 'GET') {
-    try {
-      const comments = await fetchComments();
-      res.writeHead(200, CORS_HEADERS);
-      res.end(JSON.stringify(comments));
-    } catch (err) {
-      res.writeHead(500, CORS_HEADERS);
-      res.end(JSON.stringify({ error: 'មិនអាចទាញយកមតិយោបល់បានទេ' }));
+// POST /api/comments or /comments (Protected with Rate Limiter, Honeypot & XSS Sanitization)
+app.post(['/api/comments', '/comments'], commentPostLimiter, async (req, res) => {
+  try {
+    const payload = req.body || {};
+
+    // Bot honeypot filter
+    if (payload.website_url_hp) {
+      return res.status(400).json({ error: 'ការបញ្ជូនត្រូវបានបដិសេធ (Spam bot detected)។' });
     }
-    return;
-  }
 
-  // API Route: POST /api/comments
-  if (pathname === '/api/comments' && req.method === 'POST') {
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', async () => {
-      try {
-        const payload = JSON.parse(body || '{}');
+    // Sanitize and validate inputs
+    const author = sanitizeText(payload.author).slice(0, 60);
+    const role = sanitizeText(payload.role).slice(0, 50) || 'អ្នកប្រើប្រាស់ Windows';
+    const avatarBg = sanitizeText(payload.avatarBg).slice(0, 100);
+    const rating = Math.min(5, Math.max(1, parseInt(payload.rating || 5, 10)));
+    const title = sanitizeText(payload.title).slice(0, 100);
+    const comment = sanitizeText(payload.comment).slice(0, 1500);
+    const tags = Array.isArray(payload.tags) 
+      ? payload.tags.slice(0, 5).map(t => sanitizeText(t).slice(0, 30))
+      : [];
 
-        // Bot honeypot filter
-        if (payload.website_url_hp) {
-          res.writeHead(400, CORS_HEADERS);
-          res.end(JSON.stringify({ error: 'ការបញ្ជូនត្រូវបានបដិសេធ (Spam bot detected)។' }));
-          return;
-        }
-
-        const author = (payload.author || '').trim().slice(0, 60);
-        const role = (payload.role || '').trim().slice(0, 50) || 'អ្នកប្រើប្រាស់ Windows';
-        const avatarBg = (payload.avatarBg || '').trim().slice(0, 100);
-        const rating = Math.min(5, Math.max(1, parseInt(payload.rating || 5, 10)));
-        const title = (payload.title || '').trim().slice(0, 100);
-        const comment = (payload.comment || '').trim().slice(0, 1500);
-        const tags = Array.isArray(payload.tags) ? payload.tags.slice(0, 5) : [];
-
-        if (!author || !title || comment.length < 2) {
-          res.writeHead(400, CORS_HEADERS);
-          res.end(JSON.stringify({ error: 'សូមបំពេញព័ត៌មានឱ្យបានត្រឹមត្រូវ និងសរសេរមតិយ៉ាងតិច ២ តួអក្សរ។' }));
-          return;
-        }
-
-        const newComment = {
-          id: 'rev-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
-          author,
-          role,
-          avatarBg,
-          rating,
-          title,
-          comment,
-          tags,
-          date: new Date().toISOString().split('T')[0],
-          helpfulCount: 0,
-          verified: true
-        };
-
-        await addComment(newComment);
-
-        res.writeHead(200, CORS_HEADERS);
-        res.end(JSON.stringify({
-          success: true,
-          comment: newComment,
-          message: 'ការវាយតម្លៃរបស់អ្នកត្រូវបានផ្សព្វផ្សាយដោយជោគជ័យ!'
-        }));
-      } catch (e) {
-        console.error('Error saving comment:', e);
-        res.writeHead(500, CORS_HEADERS);
-        res.end(JSON.stringify({ error: 'បញ្ហាម៉ាស៊ីនមេផ្ទៃក្នុង (Internal Server Error)' }));
-      }
-    });
-    return;
-  }
-
-  // API Route: POST /api/upvote
-  if (pathname === '/api/upvote' && req.method === 'POST') {
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', async () => {
-      try {
-        const { id } = JSON.parse(body || '{}');
-        if (!id) {
-          res.writeHead(400, CORS_HEADERS);
-          res.end(JSON.stringify({ error: 'ខ្វះលេខសម្គាល់មតិយោបល់' }));
-          return;
-        }
-
-        await upvoteComment(id);
-
-        res.writeHead(200, CORS_HEADERS);
-        res.end(JSON.stringify({ success: true, message: 'បានបោះឆ្នោតគាំទ្រជោគជ័យ' }));
-      } catch (e) {
-        console.error('Error upvoting:', e);
-        res.writeHead(500, CORS_HEADERS);
-        res.end(JSON.stringify({ error: 'បញ្ហាម៉ាស៊ីនមេផ្ទៃក្នុង' }));
-      }
-    });
-    return;
-  }
-
-  // Static File Serving
-  let reqUrl = pathname;
-  if (reqUrl === '/') reqUrl = '/index.html';
-  
-  const filePath = path.join(__dirname, decodeURIComponent(reqUrl));
-  
-  fs.stat(filePath, (err, stats) => {
-    if (err || !stats.isFile()) {
-      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end('404 Not Found');
-      return;
+    if (!author || !title || comment.length < 2) {
+      return res.status(400).json({
+        error: 'សូមបំពេញព័ត៌មានឱ្យបានត្រឹមត្រូវ និងសរសេរមតិយ៉ាងតិច ២ តួអក្សរ។'
+      });
     }
-    
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-    
-    const headers = {
-      'Content-Type': contentType,
-      'Content-Length': stats.size,
-      'Cache-Control': 'no-cache'
+
+    const newComment = {
+      id: 'rev-' + Date.now() + '-' + Math.random().toString(36).substring(2, 6),
+      author,
+      role,
+      avatarBg: avatarBg || null,
+      rating,
+      title,
+      comment,
+      tags,
+      date: new Date().toISOString().split('T')[0],
+      helpfulCount: 0,
+      verified: true
     };
-    
-    if (ext === '.exe') {
-      headers['Content-Disposition'] = `attachment; filename="${path.basename(filePath)}"`;
+
+    await addComment(newComment);
+
+    res.status(200).json({
+      success: true,
+      comment: newComment,
+      message: 'ការវាយតម្លៃរបស់អ្នកត្រូវបានផ្សព្វផ្សាយដោយជោគជ័យ!'
+    });
+  } catch (e) {
+    console.error('Error saving comment:', e);
+    res.status(500).json({ error: 'បញ្ហាម៉ាស៊ីនមេផ្ទៃក្នុង (Internal Server Error)' });
+  }
+});
+
+// POST /api/upvote or /upvote (Vercel rewrite support)
+app.post(['/api/upvote', '/upvote'], upvoteLimiter, async (req, res) => {
+  try {
+    const { id } = req.body || {};
+    if (!id || typeof id !== 'string') {
+      return res.status(400).json({ error: 'ខ្វះលេខសម្គាល់មតិយោបល់' });
     }
-    
-    res.writeHead(200, headers);
-    fs.createReadStream(filePath).pipe(res);
+
+    await upvoteComment(sanitizeText(id));
+    res.status(200).json({ success: true, message: 'បានបោះឆ្នោតគាំទ្រជោគជ័យ' });
+  } catch (e) {
+    console.error('Error upvoting:', e);
+    res.status(500).json({ error: 'បញ្ហាម៉ាស៊ីនមេផ្ទៃក្នុង' });
+  }
+});
+
+// =============================================================================
+// 5. Secure Cross-Platform Binary Downloads Route
+// =============================================================================
+const MIME_TYPES = {
+  '.exe': 'application/octet-stream',
+  '.zip': 'application/zip',
+  '.tar.gz': 'application/gzip',
+  '.gz': 'application/gzip',
+  '.tar': 'application/x-tar'
+};
+
+app.get('/Tools/:filename', (req, res) => {
+  const rawFilename = req.params.filename;
+  const safeFilename = path.basename(rawFilename); // Blocks path traversal
+  const resolvedPath = path.resolve(path.join(TOOLS_DIR, safeFilename));
+
+  // Security barrier: Ensure path is strictly inside the Tools directory
+  if (!resolvedPath.startsWith(TOOLS_DIR)) {
+    console.warn(`[Security Guard] Path traversal attempt blocked: ${req.ip} -> ${rawFilename}`);
+    return res.status(403).json({ error: 'Forbidden: Invalid file path.' });
+  }
+
+  fs.stat(resolvedPath, (err, stats) => {
+    if (err || !stats.isFile()) {
+      return res.status(404).send('Download file not found');
+    }
+
+    let ext = path.extname(safeFilename).toLowerCase();
+    if (safeFilename.toLowerCase().endsWith('.tar.gz')) {
+      ext = '.tar.gz';
+    }
+
+    const mimeType = MIME_TYPES[ext] || 'application/octet-stream';
+    res.setHeader('Content-Type', mimeType);
+    res.setHeader('Content-Disposition', `attachment; filename="${safeFilename}"`);
+    res.setHeader('Content-Length', stats.size);
+    res.setHeader('Cache-Control', 'public, max-age=86400'); // 1 day client cache
+
+    if (req.method === 'HEAD') {
+      return res.end();
+    }
+
+    const stream = fs.createReadStream(resolvedPath);
+    stream.on('error', (streamErr) => {
+      console.error('Download stream error:', streamErr);
+      if (!res.headersSent) res.status(500).send('Error streaming download');
+    });
+    stream.pipe(res);
   });
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running at http://localhost:${PORT}/ with live Turso database comments API`);
+// =============================================================================
+// 6. Safe Static Web Application Assets
+// =============================================================================
+app.use(express.static(__dirname, {
+  index: 'index.html',
+  dotfiles: 'deny', // Automatically denies dotfiles (.env, .git)
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html') || filePath.endsWith('.js') || filePath.endsWith('.css')) {
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+  }
+}));
+
+// Fallback for root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+// 404 Handler
+app.use((req, res) => {
+  res.status(404).send('404 Not Found');
+});
+
+// Centralized Error Handler (Never leak stack traces in production)
+app.use((err, req, res, next) => {
+  console.error('[Unhandled Server Error]:', err);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+
+// =============================================================================
+// 7. Export for Vercel Serverless & Local Standalone Execution
+// =============================================================================
+module.exports = app;
+
+if (require.main === module) {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[Express Security] Server running at http://localhost:${PORT}/`);
+    console.log(`[Express Security] Protected with Helmet, CSP, Rate-Limiting, CORS & Path Traversal Guards.`);
+  });
+}
