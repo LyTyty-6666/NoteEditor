@@ -22,17 +22,14 @@
 
 1. **ដំណើរការ `deploy.bat`**:
    - ចុច Double-click លើ [deploy.bat](file:///c:/Users/Ty/Desktop/web%20for%20noteeditor/deploy.bat) ហើយចុច **Enter** ដើម្បី Push កូដ និងកញ្ចប់ទាំងអស់ទៅកាន់ GitHub (`https://github.com/LyTyty-6666/NoteEditor`)។
-2. **ចូលទៅកាន់ Vercel**:
-   - ចូលទៅកាន់ **[vercel.com/new](https://vercel.com/new)**។
-3. **Import Git Repository**:
-   - ជ្រើសរើស repository **`LyTyty-6666/NoteEditor`** រួចចុច **Import**។
-4. **កំណត់ Environment Variables**:
-   - បើកផ្ទាំង **Environment Variables**។
-   - បញ្ចូល `TURSO_DATABASE_URL` និង `TURSO_AUTH_TOKEN`។
-5. **ចុច Deploy**:
-   - ចុចប៊ូតុង **Deploy**។
-   - Vercel នឹងអាន [vercel.json](file:///c:/Users/Ty/Desktop/web%20for%20noteeditor/vercel.json) និង [api/index.js](file:///c:/Users/Ty/Desktop/web%20for%20noteeditor/api/index.js) ដោយស្វ័យប្រវត្តិ។
-   - ក្នុងរយៈពេលមិនដល់ ១ នាទី វេបសាយរបស់អ្នកនឹងទទួលបាន Global Domain (ឧទាហរណ៍ `https://note-editor-xxx.vercel.app`) ជាមួយល្បឿនលឿនបំផុតនៅលើពិភពលោក!
+2. **ចូលទៅកាន់គម្រោង Vercel របស់អ្នក**:
+   - ចូលទៅកាន់ **[vercel.com/crosser/noteeditor](https://vercel.com/crosser/noteeditor)**។
+3. **កំណត់ Environment Variables ក្នុង Vercel**:
+   - ចូលទៅកាន់ **Settings** > **Environment Variables** (ឬតាមតំណ: [Settings/Environment-Variables](https://vercel.com/crosser/noteeditor/settings/environment-variables))។
+   - បន្ថែម `TURSO_DATABASE_URL` និង `TURSO_AUTH_TOKEN`។
+4. **Deploy / Redeploy**:
+   - រាល់ពេល Push ទៅកាន់ GitHub `main` branch នោះ Vercel នឹងធ្វើការ Deploy ដោយស្វ័យប្រវត្តិ។
+   - Vercel នឹងអាន [vercel.json](file:///c:/Users/Ty/Desktop/web%20for%20noteeditor/vercel.json) និង [api/index.js](file:///c:/Users/Ty/Desktop/web%20for%20noteeditor/api/index.js) ដោយស្វ័យប្រវត្តិ!
 
 ---
 
